@@ -25,6 +25,7 @@ class BottomMenu extends StatelessWidget {
           label: item.label,
         );
       }).toList(),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
     );
   }
 }

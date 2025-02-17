@@ -9,7 +9,7 @@ import 'package:flutter_cs_locker_project/components/app_bottom_menu/bottom_menu
 
 // Pages
 import 'package:flutter_cs_locker_project/pages/home/home_page.dart';
-
+import 'package:flutter_cs_locker_project/pages/history/history_page.dart';
 import 'package:flutter_cs_locker_project/pages/setting/setting_page.dart';
 
 class AppLayout extends StatefulWidget {
@@ -26,6 +26,11 @@ class _AppLayoutState extends State<AppLayout> {
       icon: Icons.home,
       label: 'หน้าแรก',
       page: const HomePage(),
+    ),
+    AppMenuItem(
+      icon: Icons.history,
+      label: 'ประวัติ',
+      page: const HistoryPage(),
     ),
     AppMenuItem(
       icon: Icons.settings,
@@ -46,6 +51,7 @@ class _AppLayoutState extends State<AppLayout> {
       appBar: TopMenu(
         appBar: AppBar(),
         title: menuItems[activeIndex].label,
+        activeIndex: activeIndex,
       ),
       body: menuItems[activeIndex].page,
       bottomNavigationBar: BottomMenu(

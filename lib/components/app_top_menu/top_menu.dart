@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class TopMenu extends StatelessWidget implements PreferredSizeWidget {
   final AppBar appBar;
+  final int activeIndex;
   final String title;
 
   const TopMenu({
     super.key,
     required this.appBar,
+    required this.activeIndex,
     required this.title,
   });
 
@@ -14,12 +16,13 @@ class TopMenu extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(
-        title == 'หน้าแรก' ? 'LockLock' : title,
+        activeIndex == 0 ? 'LockLock' : title,
         style: const TextStyle(
           color: Colors.black,
           fontSize: 22,
         ),
       ),
+      backgroundColor: const Color.fromARGB(255, 150, 171, 191),
     );
   }
 
