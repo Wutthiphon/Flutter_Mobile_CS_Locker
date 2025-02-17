@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cs_locker_project/pages/setting/setting_page.dart';
 // Data Type
 import 'package:flutter_cs_locker_project/services/data_type.dart';
 
