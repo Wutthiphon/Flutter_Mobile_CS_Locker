@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
+// Data Type
+import 'package:flutter_cs_locker_project/services/data_type.dart';
 
 class BottomMenu extends StatelessWidget {
-  const BottomMenu({super.key});
+  final int activeIndex;
+  final List<AppMenuItem> menuItems;
+  final Function(int) onTab;
+
+  const BottomMenu({
+    super.key,
+    required this.activeIndex,
+    required this.menuItems,
+    required this.onTab,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.business),
-          label: 'Business',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.school),
-          label: 'School',
-        ),
-      ],
+      currentIndex: activeIndex,
+      onTap: onTab,
+      items: menuItems.map((item) {
+        return BottomNavigationBarItem(
+          icon: Icon(item.icon),
+          label: item.label,
+        );
+      }).toList(),
     );
   }
 }
