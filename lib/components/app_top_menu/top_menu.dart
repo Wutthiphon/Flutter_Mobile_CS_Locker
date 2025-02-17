@@ -13,7 +13,7 @@ class TopMenu extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title),
+      title: Text(title == 'Home' ? 'LockLock' : title),
     );
   }
 

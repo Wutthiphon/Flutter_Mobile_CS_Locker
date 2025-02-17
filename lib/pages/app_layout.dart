@@ -47,7 +47,7 @@ class _AppLayoutState extends State<AppLayout> {
         appBar: AppBar(),
         title: menuItems[activeIndex].label,
       ),
-      body: const Text('Hello World!'),
+      body: menuItems[activeIndex].page,
       bottomNavigationBar: BottomMenu(
         activeIndex: activeIndex,
         menuItems: menuItems,
