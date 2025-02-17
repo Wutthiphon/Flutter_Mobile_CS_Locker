@@ -14,7 +14,8 @@ class MyApp extends StatelessWidget {
       title: 'LockLock',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
+        fontFamily: 'Kanit',
         useMaterial3: true,
       ),
       home: const LandingPage(),

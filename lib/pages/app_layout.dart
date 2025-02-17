@@ -24,12 +24,12 @@ class _AppLayoutState extends State<AppLayout> {
   final List<AppMenuItem> menuItems = [
     AppMenuItem(
       icon: Icons.home,
-      label: 'Home',
+      label: 'หน้าแรก',
       page: const HomePage(),
     ),
     AppMenuItem(
       icon: Icons.settings,
-      label: 'Settings',
+      label: 'การตั้งค่า',
       page: const SettingPage(),
     ),
   ];
