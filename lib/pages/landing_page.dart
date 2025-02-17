@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cs_locker_project/pages/home/home_page.dart';
+import 'package:flutter_cs_locker_project/pages/app_layout.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -17,11 +17,11 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   coolDownNavigate() {
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const HomePage(),
+          builder: (context) => const AppLayout(),
         ),
       );
     });
