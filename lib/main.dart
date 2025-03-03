@@ -17,8 +17,15 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
+        splashFactory: NoSplash.splashFactory,
         fontFamily: 'Kanit',
         useMaterial3: true,
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          },
+        ),
       ),
       home: const LandingPage(),
     );

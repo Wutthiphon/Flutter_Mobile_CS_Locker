@@ -19,6 +19,7 @@ class AppLayout extends StatefulWidget {
 }
 
 class _AppLayoutState extends State<AppLayout> {
+  bool isSignIn = false;
   int activeIndex = 0;
   final List<AppMenuItem> menuItems = [
     AppMenuItem(
@@ -51,6 +52,7 @@ class _AppLayoutState extends State<AppLayout> {
         appBar: AppBar(),
         title: menuItems[activeIndex].label,
         activeIndex: activeIndex,
+        isSignIn: isSignIn,
       ),
       body: menuItems[activeIndex].page,
       bottomNavigationBar: BottomMenu(
