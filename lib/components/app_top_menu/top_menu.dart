@@ -27,27 +27,31 @@ class TopMenu extends StatelessWidget implements PreferredSizeWidget {
           fontSize: 22,
         ),
       ),
-      // backgroundColor: const Color.fromARGB(255, 59, 86, 102),
-      // gradient background
       backgroundColor: Colors.transparent,
-      flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 110, 132, 145),
-              Color.fromARGB(255, 59, 86, 102),
-            ],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-        ),
-      ),
+      flexibleSpace: activeIndex == 0
+          ? Image.asset(
+              './assets/background/page-top-left.png',
+              fit: BoxFit.cover,
+            )
+          : Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromARGB(255, 110, 132, 145),
+                    Color.fromARGB(255, 59, 86, 102),
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
+              ),
+            ),
       actions: [
         !isSignIn
-            ? IconButton(
+            ? IconButton.outlined(
                 icon: const Icon(Icons.login),
                 style: ButtonStyle(
-                  foregroundColor: WidgetStateProperty.all(Colors.white),
+                  foregroundColor: WidgetStateProperty.all(
+                      activeIndex == 0 ? Colors.blueGrey : Colors.white),
                 ),
                 onPressed: () {
                   Navigator.push(
@@ -64,5 +68,12 @@ class TopMenu extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(appBar.preferredSize.height);
+  Size get preferredSize {
+    // เพิ่มความสูงให้กับ AppBar เมื่อ activeIndex == 0
+    if (activeIndex == 0) {
+      return Size.fromHeight(appBar.preferredSize.height + 30);
+    } else {
+      return appBar.preferredSize;
+    }
+  }
 }
