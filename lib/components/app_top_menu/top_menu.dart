@@ -21,7 +21,7 @@ class TopMenu extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(
-        activeIndex == 0 ? 'LockLock' : title,
+        activeIndex == 0 ? 'Lock!Lock!' : title,
         style: const TextStyle(
           color: Colors.white,
           fontSize: 22,
