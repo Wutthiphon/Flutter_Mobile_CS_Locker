@@ -23,6 +23,14 @@ class TopMenu extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       backgroundColor: const Color.fromARGB(255, 150, 171, 191),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.login),
+          onPressed: () {
+            debugPrint('Login Tap');
+          },
+        ),
+      ],
     );
   }
 
