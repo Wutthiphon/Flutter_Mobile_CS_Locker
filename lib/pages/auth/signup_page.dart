@@ -22,7 +22,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
       body: const Center(
-        child: Text('Sign In Page'),
+        child: Text('Sign Up Page'),
       ),
     );
   }
