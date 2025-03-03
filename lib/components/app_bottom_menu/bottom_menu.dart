@@ -26,6 +26,7 @@ class BottomMenu extends StatelessWidget {
         );
       }).toList(),
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      type: BottomNavigationBarType.fixed,
     );
   }
 }

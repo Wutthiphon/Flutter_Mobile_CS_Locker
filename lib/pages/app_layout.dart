@@ -10,6 +10,7 @@ import 'package:flutter_cs_locker_project/components/app_bottom_menu/bottom_menu
 import 'package:flutter_cs_locker_project/pages/home/home_page.dart';
 import 'package:flutter_cs_locker_project/pages/history/history_page.dart';
 import 'package:flutter_cs_locker_project/pages/setting/setting_page.dart';
+import 'package:flutter_cs_locker_project/pages/reserve/reserve_page.dart';
 
 class AppLayout extends StatefulWidget {
   const AppLayout({super.key});
@@ -31,6 +32,11 @@ class _AppLayoutState extends State<AppLayout> {
       icon: Icons.history,
       label: 'ประวัติ',
       page: const HistoryPage(),
+    ),
+    AppMenuItem(
+      icon: Icons.history,
+      label: 'การจอง',
+      page: const ReservePage(),
     ),
     AppMenuItem(
       icon: Icons.settings,
