@@ -50,7 +50,7 @@ class _LandingPageState extends State<LandingPage> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(25),
                 child: Image.asset(
-                  'assets/logo/logo.png',
+                  './assets/logo/logo.png',
                   width: 200,
                 ),
               ),

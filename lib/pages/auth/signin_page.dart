@@ -45,97 +45,116 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('เข้าสู่ระบบ'),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      resizeToAvoidBottomInset: false,
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(25),
-              child: Image.asset(
-                'assets/logo/logo.png',
-                width: 200,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            expandedHeight: 130.0,
+            flexibleSpace: FlexibleSpaceBar(
+              title: const Text('เข้าสู่ระบบ'),
+              centerTitle: true,
+              background: Image.asset(
+                './assets/background/page-top-right.png',
+                fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(height: 50),
-            CustomTextFormField(
-              controller: signinUserData.username,
-              inputLabel: 'E-mail',
-              inputHint: 'E-mail',
-              inputIcon: Icons.person,
-            ),
-            CustomTextFormField(
-              controller: signinUserData.password,
-              inputLabel: 'รหัสผ่าน',
-              inputHint: 'Password',
-              inputIcon: Icons.key,
-              obscureText: true,
-            ),
-            isError
-                ? Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      errorMessage,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                  )
-                : const SizedBox(),
-            const SizedBox(height: 30),
-            CustomElevatedButton(
-              label: 'เข้าสู่ระบบ',
-              fullWidth: true,
-              rounded: true,
-              color: 'primary',
-              onPressed: onSignIn,
-            ),
-            const SizedBox(height: 10),
-            const Row(
-              children: [
-                Expanded(
-                  child: Divider(
-                    color: Colors.grey,
+            floating: false,
+            pinned: true,
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(25),
+                        child: Image.asset(
+                          'assets/logo/logo.png',
+                          width: 200,
+                        ),
+                      ),
+                      const SizedBox(height: 50),
+                      CustomTextFormField(
+                        controller: signinUserData.username,
+                        inputLabel: 'E-mail',
+                        inputHint: 'E-mail',
+                        inputIcon: Icons.person,
+                      ),
+                      CustomTextFormField(
+                        controller: signinUserData.password,
+                        inputLabel: 'รหัสผ่าน',
+                        inputHint: 'Password',
+                        inputIcon: Icons.key,
+                        obscureText: true,
+                      ),
+                      isError
+                          ? Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                errorMessage,
+                                style: const TextStyle(color: Colors.red),
+                              ),
+                            )
+                          : const SizedBox(),
+                      const SizedBox(height: 30),
+                      CustomElevatedButton(
+                        label: 'เข้าสู่ระบบ',
+                        fullWidth: true,
+                        rounded: true,
+                        color: 'primary',
+                        onPressed: onSignIn,
+                      ),
+                      const SizedBox(height: 10),
+                      const Row(
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              'หรือ',
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Divider(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      CustomElevatedButton(
+                        label: 'สมัครสมาชิก',
+                        fullWidth: true,
+                        rounded: true,
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignUpPage(),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    'หรือ',
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Divider(
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
+                );
+              },
+              childCount: 1,
             ),
-            const SizedBox(height: 10),
-            CustomElevatedButton(
-              label: 'สมัครสมาชิก',
-              fullWidth: true,
-              rounded: true,
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SignUpPage(),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
