@@ -30,12 +30,12 @@ class _AppLayoutState extends State<AppLayout> {
     ),
     AppMenuItem(
       icon: Icons.history,
-      label: 'ประวัติ',
+      label: 'ล็อคเกอร์ของฉัน',
       page: const HistoryPage(),
     ),
     AppMenuItem(
-      icon: Icons.history,
-      label: 'การจอง',
+      icon: Icons.confirmation_number,
+      label: 'จองล็อคเกอร์',
       page: const ReservePage(),
     ),
     AppMenuItem(
