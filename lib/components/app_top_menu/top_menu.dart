@@ -23,15 +23,32 @@ class TopMenu extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         activeIndex == 0 ? 'LockLock' : title,
         style: const TextStyle(
-          color: Colors.black,
+          color: Colors.white,
           fontSize: 22,
         ),
       ),
-      backgroundColor: const Color.fromARGB(255, 150, 171, 191),
+      // backgroundColor: const Color.fromARGB(255, 59, 86, 102),
+      // gradient background
+      backgroundColor: Colors.transparent,
+      flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromARGB(255, 110, 132, 145),
+              Color.fromARGB(255, 59, 86, 102),
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+        ),
+      ),
       actions: [
         !isSignIn
             ? IconButton(
                 icon: const Icon(Icons.login),
+                style: ButtonStyle(
+                  foregroundColor: WidgetStateProperty.all(Colors.white),
+                ),
                 onPressed: () {
                   Navigator.push(
                     context,
