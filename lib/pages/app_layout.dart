@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../services/storage/storage.dart';
+
 // Data Type
 import 'package:flutter_cs_locker_project/services/data_type.dart';
 
@@ -44,6 +46,17 @@ class _AppLayoutState extends State<AppLayout> {
       page: const SettingPage(),
     ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    checkSignInStatus();
+  }
+
+  Future<void> checkSignInStatus() async {
+    isSignIn = (await Storage().getData('AUTH_TOKEN') != null) ? true : false;
+    debugPrint('isSignIn: $isSignIn');
+  }
 
   void onTab(int index) {
     setState(() {
