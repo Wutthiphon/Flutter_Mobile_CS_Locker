@@ -12,7 +12,14 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('Setting Page'),
+        child: Column(
+          children: [
+            SizedBox(height: 16),
+            Text('Setting Page'),
+            SizedBox(height: 16),
+            Text('LockLock | Version: 1.0.0'),
+          ],
+        ),
       ),
     );
   }
