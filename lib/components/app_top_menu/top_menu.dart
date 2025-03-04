@@ -69,7 +69,6 @@ class TopMenu extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize {
-    // เพิ่มความสูงให้กับ AppBar เมื่อ activeIndex == 0
     if (activeIndex == 0) {
       return Size.fromHeight(appBar.preferredSize.height + 30);
     } else {

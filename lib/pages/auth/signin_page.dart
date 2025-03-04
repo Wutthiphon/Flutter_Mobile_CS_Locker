@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
+// Data Type
+import 'package:flutter_cs_locker_project/services/data_type.dart';
+
 // Custom Components
 import 'package:flutter_cs_locker_project/components/custom_text_form_filed.dart';
 import 'package:flutter_cs_locker_project/components/custom_elevated_button.dart';
+import 'package:flutter_cs_locker_project/components/dialog/loading_dialog.dart';
 
 // Pages
 import 'package:flutter_cs_locker_project/pages/auth/signup_page.dart';
+import 'package:flutter_cs_locker_project/services/api/auth_api.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -15,6 +20,8 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  HttpAuthAPIService httpAuthAPIService = HttpAuthAPIService();
+
   var signinFormKey = GlobalKey<FormState>();
   final signinUserData = UserData(
     username: TextEditingController(),
@@ -37,20 +44,37 @@ class _SignInPageState extends State<SignInPage> {
     super.dispose();
   }
 
-  void onSignIn() {
-    if (!signinFormKey.currentState!.validate() && !isApiLoading) {
+  void onSignIn() async {
+    if (signinFormKey.currentState!.validate() && !isApiLoading) {
+      showLoadingDialog(context);
       setState(() {
         isError = false;
         errorMessage = '';
       });
 
       isApiLoading = true;
-      // Call API
+      httpAuthAPIService
+          .login(
+        LoginUserData(
+          username: signinUserData.username.text,
+          password: signinUserData.password.text,
+        ),
+      )
+          .then(
+        (res) {
+          isApiLoading = false;
+          hideLoadingDialog(context);
+          if (res.containsKey('error') && !!res['error']) {
+            setState(() {
+              isError = true;
+              errorMessage = res['message'];
+            });
+            return;
+          }
 
-      // setState(() {
-      //   isError = true;
-      //   errorMessage = 'กรุณากรอกข้อมูลให้ครบถ้วน';
-      // });
+          // Store UserData & Token
+        },
+      );
     }
   }
 

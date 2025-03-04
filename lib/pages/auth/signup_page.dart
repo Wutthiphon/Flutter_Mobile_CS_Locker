@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // Custom Components
 import 'package:flutter_cs_locker_project/components/custom_text_form_filed.dart';
 import 'package:flutter_cs_locker_project/components/custom_elevated_button.dart';
+import 'package:flutter_cs_locker_project/components/dialog/loading_dialog.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -47,7 +48,7 @@ class _SignUpPageState extends State<SignUpPage> {
       errorMessage = '';
     });
 
-    if (!registerFormKey.currentState!.validate() && !isApiLoading) {
+    if (registerFormKey.currentState!.validate() && !isApiLoading) {
       if (signupUserData.password.text != signupUserData.repassword.text) {
         setState(() {
           isError = true;

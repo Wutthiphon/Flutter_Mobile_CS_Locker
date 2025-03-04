@@ -1,5 +1,3 @@
-// Call CallAPI('url', 'METHOD)
-
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -9,6 +7,14 @@ class APIService {
   late final dynamic data;
 
   APIService({required this.url, required this.method, this.data});
+
+  dynamic parseResponseBody(String body) {
+    try {
+      return jsonDecode(body);
+    } catch (e) {
+      return null;
+    }
+  }
 
   // IF Post Put Patch and have data to send
   Future<dynamic> fetch() async {
@@ -47,9 +53,24 @@ class APIService {
     }
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      return parseResponseBody(response.body);
     } else {
-      throw Exception('Failed to load data');
+      dynamic errorMessage = parseResponseBody(response.body);
+
+      if (errorMessage != null && errorMessage is Map) {
+        return {
+          'error': true,
+          'statusCode': response.statusCode,
+          'message':
+              errorMessage['message'] ?? 'Failed to load data from server',
+        };
+      } else {
+        return {
+          'error': true,
+          'statusCode': response.statusCode,
+          'message': 'Failed to load data from server',
+        };
+      }
     }
   }
 }
