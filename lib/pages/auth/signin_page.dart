@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // Custom Components
 import 'package:flutter_cs_locker_project/components/custom_text_form_filed.dart';
@@ -16,33 +15,42 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  var signinFormKey = GlobalKey<FormState>();
   final signinUserData = UserData(
     username: TextEditingController(),
     password: TextEditingController(),
   );
+
   bool isApiLoading = false;
   bool isError = false;
   String errorMessage = '';
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    signinUserData.username.dispose();
+    signinUserData.password.dispose();
+    super.dispose();
+  }
+
   void onSignIn() {
-    if (!isApiLoading) {
+    if (!signinFormKey.currentState!.validate() && !isApiLoading) {
       setState(() {
         isError = false;
         errorMessage = '';
       });
 
-      if (signinUserData.username.text.isEmpty ||
-          signinUserData.password.text.isEmpty) {
-        setState(() {
-          isError = true;
-          errorMessage = 'กรุณากรอกข้อมูลให้ครบถ้วน';
-        });
-        return;
-      }
-
       isApiLoading = true;
-      debugPrint(dotenv.env['API_URL']);
       // Call API
+
+      // setState(() {
+      //   isError = true;
+      //   errorMessage = 'กรุณากรอกข้อมูลให้ครบถ้วน';
+      // });
     }
   }
 
@@ -65,9 +73,8 @@ class _SignInPageState extends State<SignInPage> {
       ),
       body: Stack(
         children: [
-          // รูปภาพที่ใช้เป็นพื้นหลัง
           Positioned(
-            top: 0, // ให้รูปแสดงทับจากด้านบนเลย
+            top: 0,
             left: 0,
             right: 0,
             child: Image.asset(
@@ -82,83 +89,101 @@ class _SignInPageState extends State<SignInPage> {
               left: 20,
               right: 20,
             ),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(25),
-                  child: Image.asset(
-                    'assets/logo/logo.png',
-                    width: 200,
-                  ),
-                ),
-                const SizedBox(height: 50),
-                CustomTextFormField(
-                  controller: signinUserData.username,
-                  inputLabel: 'E-mail',
-                  inputHint: 'E-mail',
-                  inputIcon: Icons.person,
-                ),
-                CustomTextFormField(
-                  controller: signinUserData.password,
-                  inputLabel: 'รหัสผ่าน',
-                  inputHint: 'Password',
-                  inputIcon: Icons.key,
-                  obscureText: true,
-                ),
-                isError
-                    ? Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          errorMessage,
-                          style: const TextStyle(color: Colors.red),
-                        ),
-                      )
-                    : const SizedBox(),
-                const SizedBox(height: 30),
-                CustomElevatedButton(
-                  label: 'เข้าสู่ระบบ',
-                  fullWidth: true,
-                  rounded: true,
-                  color: 'primary',
-                  onPressed: onSignIn,
-                ),
-                const SizedBox(height: 10),
-                const Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                      ),
+            child: Form(
+              key: signinFormKey,
+              child: Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(25),
+                    child: Image.asset(
+                      'assets/logo/logo.png',
+                      width: 200,
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(
-                        'หรือ',
-                        style: TextStyle(
+                  ),
+                  const SizedBox(height: 50),
+                  CustomTextFormField(
+                    controller: signinUserData.username,
+                    inputLabel: 'E-mail',
+                    inputHint: 'E-mail',
+                    inputIcon: Icons.person,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    onValidate: (value) {
+                      if (value?.isEmpty ?? true) return 'กรุณากรอก E-mail';
+                      if (!RegExp(r'@').hasMatch(value ?? '')) {
+                        return 'กรุณากรอก E-mail ให้ถูกต้อง';
+                      }
+                      return null;
+                    },
+                  ),
+                  CustomTextFormField(
+                    controller: signinUserData.password,
+                    inputLabel: 'รหัสผ่าน',
+                    inputHint: 'Password',
+                    inputIcon: Icons.key,
+                    obscureText: true,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    onValidate: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'กรุณากรอกรหัสผ่าน';
+                      }
+                      return null;
+                    },
+                  ),
+                  isError
+                      ? Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            errorMessage,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        )
+                      : const SizedBox(),
+                  const SizedBox(height: 30),
+                  CustomElevatedButton(
+                    label: 'เข้าสู่ระบบ',
+                    fullWidth: true,
+                    rounded: true,
+                    color: 'primary',
+                    onPressed: onSignIn,
+                  ),
+                  const SizedBox(height: 10),
+                  const Row(
+                    children: [
+                      Expanded(
+                        child: Divider(
                           color: Colors.grey,
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          'หรือ',
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Divider(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  CustomElevatedButton(
+                    label: 'สมัครสมาชิก',
+                    fullWidth: true,
+                    rounded: true,
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SignUpPage(),
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                CustomElevatedButton(
-                  label: 'สมัครสมาชิก',
-                  fullWidth: true,
-                  rounded: true,
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SignUpPage(),
-                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

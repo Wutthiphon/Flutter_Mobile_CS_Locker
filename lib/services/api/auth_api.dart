@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../data_type.dart';
 import '../http_service.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 String host = "http://localhost:3000/api/auths";
 
 class HttpAuth {
   register(String username, String password, String name, String email) async {
+    // debugPrint(dotenv.env['API_URL']);
+
     String url = "$host/register";
     // final response = await http.post(Uri.parse(url), headers: {
     //   "Accept": "application/json",
@@ -25,12 +28,12 @@ class HttpAuth {
     //   throw Exception('failed register!');
     // }
     dynamic input = {
-      "username":username,
-      "password":password,
-      "name":name,
-      "email":email,
+      "username": username,
+      "password": password,
+      "name": name,
+      "email": email,
     };
-    dynamic res = APIService(url: url, method: 'POST',data: input);
+    dynamic res = APIService(url: url, method: 'POST', data: input);
   }
 
   Future<User> login(String username, String password) async {
@@ -63,5 +66,4 @@ class HttpAuth {
       throw Exception('failed logout!');
     }
   }
-  
 }

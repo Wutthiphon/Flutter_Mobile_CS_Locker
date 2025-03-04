@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../services/storage/storage.dart';
 
 // Data Type
@@ -26,22 +27,22 @@ class _AppLayoutState extends State<AppLayout> {
   int activeIndex = 0;
   final List<AppMenuItem> menuItems = [
     AppMenuItem(
-      icon: Icons.home,
+      icon: const Icon(FontAwesomeIcons.house),
       label: 'หน้าแรก',
       page: const HomePage(),
     ),
     AppMenuItem(
-      icon: Icons.history,
+      icon: const Icon(FontAwesomeIcons.vault),
       label: 'ล็อคเกอร์ของฉัน',
       page: const HistoryPage(),
     ),
     AppMenuItem(
-      icon: Icons.confirmation_number,
+      icon: const Icon(FontAwesomeIcons.bookBookmark),
       label: 'จองล็อคเกอร์',
       page: const ReservePage(),
     ),
     AppMenuItem(
-      icon: Icons.settings,
+      icon: const Icon(FontAwesomeIcons.gear),
       label: 'การตั้งค่า',
       page: const SettingPage(),
     ),
@@ -51,6 +52,11 @@ class _AppLayoutState extends State<AppLayout> {
   void initState() {
     super.initState();
     checkSignInStatus();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Future<void> checkSignInStatus() async {

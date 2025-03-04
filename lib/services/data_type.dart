@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppMenuItem {
-  final IconData icon;
+  final Icon icon;
   final String label;
   final Widget page;
 

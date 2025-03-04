@@ -17,6 +17,11 @@ class _LandingPageState extends State<LandingPage> {
     coolDownNavigate();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   coolDownNavigate() {
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement(

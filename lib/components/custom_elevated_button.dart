@@ -70,7 +70,7 @@ class CustomElevatedButton extends StatelessWidget {
       default:
         return [
           const Color.fromARGB(255, 230, 230, 230),
-          const Color.fromARGB(255, 244, 246, 255)
+          const Color.fromARGB(255, 234, 236, 245)
         ];
     }
   }

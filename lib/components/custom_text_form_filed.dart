@@ -42,26 +42,33 @@ class CustomTextFormField extends StatelessWidget {
               ])
             : const SizedBox(),
         SizedBox(
-          height: 60,
+          height: 70,
           child: TextFormField(
             controller: controller,
             obscureText: obscureText ?? false,
             scrollPadding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
             decoration: InputDecoration(
               contentPadding: EdgeInsets.symmetric(
-                  vertical: 10.0, horizontal: inputIcon != null ? 0.0 : 20.0),
+                vertical: 10.0,
+                horizontal: inputIcon != null ? 0.0 : 20.0,
+              ),
               filled: true,
               fillColor: Colors.white,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(50),
                 borderSide: const BorderSide(
-                    color: Color.fromARGB(80, 170, 170, 170), width: 1),
+                  color: Color.fromARGB(80, 170, 170, 170),
+                  width: 1,
+                ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(50),
                 borderSide: const BorderSide(
-                    color: Color.fromARGB(80, 170, 170, 170), width: 1),
+                  color: Color.fromARGB(80, 170, 170, 170),
+                  width: 1,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(50),
@@ -89,7 +96,7 @@ class CustomTextFormField extends StatelessWidget {
                 color: Color.fromARGB(255, 28, 117, 188),
               ),
               errorStyle: const TextStyle(
-                height: 0.1,
+                height: 0.8,
                 color: Color.fromARGB(255, 255, 87, 34),
               ),
               prefixIcon: inputIcon != null && inputIcon != null

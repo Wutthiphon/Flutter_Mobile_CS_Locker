@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 // Data Type
 import 'package:flutter_cs_locker_project/services/data_type.dart';
 
@@ -18,10 +19,13 @@ class BottomMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: activeIndex,
+      selectedFontSize: 12,
+      unselectedFontSize: 12,
+      iconSize: 20,
       onTap: onTab,
       items: menuItems.map((item) {
         return BottomNavigationBarItem(
-          icon: Icon(item.icon),
+          icon: item.icon,
           label: item.label,
         );
       }).toList(),
