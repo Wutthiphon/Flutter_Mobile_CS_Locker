@@ -8,6 +8,7 @@ import 'package:flutter_cs_locker_project/services/data_type.dart';
 import 'package:flutter_cs_locker_project/components/dialog/confirmation_dialog.dart';
 
 // Pages
+import 'package:flutter_cs_locker_project/pages/setting/application_info_page.dart';
 import 'package:flutter_cs_locker_project/pages/app_layout.dart';
 
 class SettingPage extends StatefulWidget {
@@ -149,7 +150,12 @@ class _SettingPageState extends State<SettingPage> {
                       leading: const Icon(Icons.info),
                       title: const Text('เกี่ยวกับแอปพลิเคชัน'),
                       trailing: const Icon(Icons.arrow_forward_ios),
-                      onTap: () {},
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ApplicationInfoPage(),
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -181,9 +187,10 @@ class _SettingPageState extends State<SettingPage> {
                                 onTap: () => onSignOut(),
                               ),
                             ),
+                            const SizedBox(height: 30),
                           ],
                         )
-                      : const SizedBox(height: 10),
+                      : const SizedBox(height: 20),
                   const Center(
                     child: Column(
                       children: [
