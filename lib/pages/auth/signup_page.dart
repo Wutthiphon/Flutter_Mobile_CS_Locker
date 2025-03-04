@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cs_locker_project/services/api/auth_api.dart';
+import 'package:flutter_cs_locker_project/services/storage/storage.dart';
+
+// Data Type
+import 'package:flutter_cs_locker_project/services/data_type.dart';
 
 // Custom Components
 import 'package:flutter_cs_locker_project/components/custom_text_form_filed.dart';
 import 'package:flutter_cs_locker_project/components/custom_elevated_button.dart';
 import 'package:flutter_cs_locker_project/components/dialog/loading_dialog.dart';
+
+// Pages
+import 'package:flutter_cs_locker_project/pages/auth/signup_success_page.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -13,12 +21,14 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  HttpAuthAPIService httpAuthAPIService = HttpAuthAPIService();
+
   bool isKeyboardOpen = false;
 
   var registerFormKey = GlobalKey<FormState>();
   final signupUserData = UserRegisterData(
-    fname: TextEditingController(),
-    lname: TextEditingController(),
+    firstname: TextEditingController(),
+    lastname: TextEditingController(),
     email: TextEditingController(),
     password: TextEditingController(),
     repassword: TextEditingController(),
@@ -34,8 +44,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   void dispose() {
-    signupUserData.fname.dispose();
-    signupUserData.lname.dispose();
+    signupUserData.firstname.dispose();
+    signupUserData.lastname.dispose();
     signupUserData.email.dispose();
     signupUserData.password.dispose();
     signupUserData.repassword.dispose();
@@ -57,8 +67,47 @@ class _SignUpPageState extends State<SignUpPage> {
         return;
       }
 
+      showLoadingDialog(context);
       isApiLoading = true;
-      // Call API
+
+      httpAuthAPIService
+          .register(
+        RegisterUserData(
+          firstname: signupUserData.firstname.text,
+          lastname: signupUserData.lastname.text,
+          email: signupUserData.email.text,
+          password: signupUserData.password.text,
+        ),
+      )
+          .then(
+        (res) {
+          isApiLoading = false;
+          hideLoadingDialog(context);
+          if (res.containsKey('error') && !!res['error']) {
+            setState(() {
+              isError = true;
+              errorMessage = res['message'];
+            });
+            return;
+          }
+          // Wait for OTP Page
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => const SignUpSuccessPage(),
+          //   ),
+          // );
+          // Storage().saveData('AUTH_TOKEN', res['token']);
+          // Storage().saveJsonData(
+          //   'AUTH_USER',
+          //   {
+          //     'email': res['email'],
+          //     'firstname': res['firstname'],
+          //     'lastname': res['lastname'],
+          //   },
+          // );
+        },
+      );
     }
   }
 
@@ -105,7 +154,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: Column(
                   children: [
                     CustomTextFormField(
-                      controller: signupUserData.fname,
+                      controller: signupUserData.firstname,
                       inputLabel: 'ชื่อ',
                       inputHint: 'Name',
                       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -117,7 +166,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       },
                     ),
                     CustomTextFormField(
-                      controller: signupUserData.lname,
+                      controller: signupUserData.lastname,
                       inputLabel: 'นามสกุล',
                       inputHint: 'Lastname',
                       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -197,15 +246,15 @@ class _SignUpPageState extends State<SignUpPage> {
 }
 
 class UserRegisterData {
-  final TextEditingController fname;
-  final TextEditingController lname;
+  final TextEditingController firstname;
+  final TextEditingController lastname;
   final TextEditingController email;
   final TextEditingController password;
   final TextEditingController repassword;
 
   UserRegisterData({
-    required this.fname,
-    required this.lname,
+    required this.firstname,
+    required this.lastname,
     required this.email,
     required this.password,
     required this.repassword,

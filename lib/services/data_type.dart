@@ -22,6 +22,20 @@ class LoginUserData {
   });
 }
 
+class RegisterUserData {
+  final String firstname;
+  final String lastname;
+  final String email;
+  final String password;
+
+  RegisterUserData({
+    required this.firstname,
+    required this.lastname,
+    required this.email,
+    required this.password,
+  });
+}
+
 class UserData {
   final String email;
   final String firstname;

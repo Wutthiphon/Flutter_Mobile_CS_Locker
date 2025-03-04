@@ -47,9 +47,17 @@ class ApplicationInfoPage extends StatelessWidget {
               right: 10.0,
             ),
             width: MediaQuery.of(context).size.width,
-            child: const Column(
+            child: Column(
               children: [
-                Text(
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(25),
+                  child: Image.asset(
+                    'assets/logo/logo.png',
+                    width: 150,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
                   'Lock!Lock! Application',
                   style: TextStyle(
                     color: Colors.blueGrey,
@@ -57,14 +65,14 @@ class ApplicationInfoPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
+                const Text(
                   'Version 1.0.0',
                   style: TextStyle(
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(height: 20),
-                Text(
+                const SizedBox(height: 20),
+                const Text(
                   'พัฒนาโดย',
                   style: TextStyle(
                     color: Colors.blueGrey,
@@ -72,18 +80,18 @@ class ApplicationInfoPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
+                const Text(
                   "นายวุฒิพร ทัศนา",
                 ),
-                Text(
+                const Text(
                   "นายอชิรวิชญ์ บุญแต่ง",
                 ),
-                SizedBox(height: 20),
-                Text(
+                const SizedBox(height: 20),
+                const Text(
                   "วิชาการพัฒนา Mobile Application",
                   textAlign: TextAlign.center,
                 ),
-                Text(
+                const Text(
                   "สาขาวิทยาการคอมพิวเตอร์ คณะวิทยาศาสตร์ประยุกต์ มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ",
                   textAlign: TextAlign.center,
                   style: TextStyle(

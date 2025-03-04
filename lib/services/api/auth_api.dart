@@ -17,6 +17,20 @@ class HttpAuthAPIService {
     ).fetch();
   }
 
+  Future register(RegisterUserData registerUserData) async {
+    String url = "$apiURL/auth/user-register";
+    return APIService(
+      url: url,
+      method: 'POST',
+      data: {
+        "email": registerUserData.email,
+        "password": registerUserData.password,
+        "firstname": registerUserData.firstname,
+        "lastname": registerUserData.lastname,
+      },
+    ).fetch();
+  }
+
   // register(String username, String password, String name, String email) async {
   //   // debugPrint(dotenv.env['API_URL']);
 
