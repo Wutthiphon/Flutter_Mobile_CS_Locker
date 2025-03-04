@@ -61,7 +61,6 @@ class _AppLayoutState extends State<AppLayout> {
 
   Future<void> checkSignInStatus() async {
     isSignIn = await Storage().getData('AUTH_TOKEN') != null;
-    debugPrint('isSignIn: $isSignIn');
   }
 
   void onTab(int index) {

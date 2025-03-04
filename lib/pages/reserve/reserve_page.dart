@@ -11,8 +11,14 @@ class _ReserveStatePage extends State<ReservePage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text('Reserve Page'),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              Text('Reserve Page'),
+            ],
+          ),
+        ),
       ),
     );
   }

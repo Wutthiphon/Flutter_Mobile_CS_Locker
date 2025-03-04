@@ -6,6 +6,7 @@ class CustomElevatedButton extends StatelessWidget {
   final bool fullWidth;
   final bool rounded;
   final String color;
+  final String size;
 
   const CustomElevatedButton({
     super.key,
@@ -14,6 +15,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.fullWidth = false,
     this.rounded = false,
     this.color = 'default',
+    this.size = 'medium',
   });
 
   @override
@@ -38,11 +40,29 @@ class CustomElevatedButton extends StatelessWidget {
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(borderRadius: borderRadius),
+          minimumSize: Size.zero,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          padding: EdgeInsets.symmetric(
+            vertical: size == 'small'
+                ? 10
+                : size == 'medium'
+                    ? 12
+                    : 14,
+            horizontal: size == 'small'
+                ? 14
+                : size == 'medium'
+                    ? 16
+                    : 18,
+          ),
         ),
         child: Text(
           label,
           style: TextStyle(
-              fontSize: 16,
+              fontSize: size == 'small'
+                  ? 14
+                  : size == 'medium'
+                      ? 16
+                      : 18,
               color: color == 'default'
                   ? const Color.fromARGB(255, 77, 77, 77)
                   : Colors.white),
@@ -67,10 +87,15 @@ class CustomElevatedButton extends StatelessWidget {
         ];
       case 'warning':
         return [Colors.orange.shade700, Colors.orange.shade400];
+      case 'secondary':
+        return [
+          const Color.fromARGB(255, 77, 77, 77),
+          const Color.fromARGB(255, 128, 128, 128)
+        ];
       default:
         return [
           const Color.fromARGB(255, 230, 230, 230),
-          const Color.fromARGB(255, 234, 236, 245)
+          const Color.fromARGB(255, 244, 246, 255)
         ];
     }
   }
@@ -82,6 +107,7 @@ class CustomElevatedButton extends StatelessWidget {
       case 'danger':
       case 'success':
       case 'warning':
+      case 'secondary':
         return Colors.transparent;
       default:
         return const Color.fromARGB(255, 235, 234, 234);

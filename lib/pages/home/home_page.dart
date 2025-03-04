@@ -16,7 +16,6 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
               Text('Home Page'),
-              Text('Home Page'),
             ],
           ),
         ),
