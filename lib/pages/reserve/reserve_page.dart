@@ -10,13 +10,16 @@ class ReservePage extends StatefulWidget {
 class _ReserveStatePage extends State<ReservePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              Text('Reserve Page'),
-            ],
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 10.0,
+            left: 20.0,
+            right: 20.0,
+          ),
+          child: const Center(
+            child: Text('Reserve Page'),
           ),
         ),
       ),
