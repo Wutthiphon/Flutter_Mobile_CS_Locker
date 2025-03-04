@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cs_locker_project/services/api/auth_api.dart';
+import 'package:flutter_cs_locker_project/services/storage/storage.dart';
 
 // Data Type
 import 'package:flutter_cs_locker_project/services/data_type.dart';
@@ -9,8 +11,8 @@ import 'package:flutter_cs_locker_project/components/custom_elevated_button.dart
 import 'package:flutter_cs_locker_project/components/dialog/loading_dialog.dart';
 
 // Pages
+import 'package:flutter_cs_locker_project/pages/app_layout.dart';
 import 'package:flutter_cs_locker_project/pages/auth/signup_page.dart';
-import 'package:flutter_cs_locker_project/services/api/auth_api.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -71,8 +73,22 @@ class _SignInPageState extends State<SignInPage> {
             });
             return;
           }
-
-          // Store UserData & Token
+          Storage().saveData('AUTH_TOKEN', res['token']);
+          Storage().saveData(
+            'AUTH_USER',
+            {
+              'email': res['email'],
+              'firstname': res['firstname'],
+              'lastname': res['lastname'],
+            }.toString(),
+          );
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AppLayout(),
+            ),
+            (route) => false,
+          );
         },
       );
     }

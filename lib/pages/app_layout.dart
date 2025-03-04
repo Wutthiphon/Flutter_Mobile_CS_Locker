@@ -60,7 +60,10 @@ class _AppLayoutState extends State<AppLayout> {
   }
 
   Future<void> checkSignInStatus() async {
-    isSignIn = await Storage().getData('AUTH_TOKEN') != null;
+    bool signInStatus = await Storage().getData('AUTH_TOKEN') != null;
+    setState(() {
+      isSignIn = signInStatus;
+    });
   }
 
   void onTab(int index) {

@@ -1,3 +1,4 @@
+import 'package:flutter_cs_locker_project/services/storage/storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -18,38 +19,46 @@ class APIService {
 
   // IF Post Put Patch and have data to send
   Future<dynamic> fetch() async {
+    String? token = await Storage().getData('AUTH_TOKEN');
     http.Response response = http.Response('', 500);
+
+    Map<String, String> headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    };
+
+    if (token != null) {
+      headers['Authorization'] = 'Bearer $token';
+    }
+
     if (method == 'GET') {
-      response = await http.get(Uri.parse(url), headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      });
+      response = await http.get(
+        Uri.parse(url),
+        headers: headers,
+      );
     } else if (method == 'POST') {
-      response = await http.post(Uri.parse(url),
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode(data));
+      response = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        body: jsonEncode(data),
+      );
     } else if (method == 'PUT') {
-      response = await http.put(Uri.parse(url),
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode(data));
+      response = await http.put(
+        Uri.parse(url),
+        headers: headers,
+        body: jsonEncode(data),
+      );
     } else if (method == 'PATCH') {
-      response = await http.patch(Uri.parse(url),
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode(data));
+      response = await http.patch(
+        Uri.parse(url),
+        headers: headers,
+        body: jsonEncode(data),
+      );
     } else if (method == 'DELETE') {
-      response = await http.delete(Uri.parse(url), headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      });
+      response = await http.delete(
+        Uri.parse(url),
+        headers: headers,
+      );
     }
 
     if (response.statusCode == 200) {

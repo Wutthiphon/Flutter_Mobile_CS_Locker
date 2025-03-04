@@ -26,7 +26,10 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Future<void> checkSignInStatus() async {
-    isSignIn = await Storage().getData('AUTH_TOKEN') != null;
+    bool signInStatus = await Storage().getData('AUTH_TOKEN') != null;
+    setState(() {
+      isSignIn = signInStatus;
+    });
   }
 
   @override
