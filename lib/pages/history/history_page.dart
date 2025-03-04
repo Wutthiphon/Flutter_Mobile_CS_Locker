@@ -50,14 +50,18 @@ class _HistoryPageState extends State<HistoryPage> {
               child: Padding(
                 padding: const EdgeInsets.only(
                   top: 10.0,
-                  left: 20.0,
-                  right: 20.0,
+                  left: 10.0,
+                  right: 10.0,
                 ),
                 child: isSignIn
                     ? Column(
                         children: [
-                          Text('Is Login')
-                          // LockerCard(),
+                          LockerCard(
+                            lockerNumber: 1,
+                            isInUse: true,
+                            passCode: '123456',
+                            reserveDate: DateTime.now(),
+                          )
                         ],
                       )
                     : const Center(

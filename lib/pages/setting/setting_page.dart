@@ -98,7 +98,6 @@ class _SettingPageState extends State<SettingPage> {
                 children: [
                   isSignIn
                       ? Card(
-                          // Gradient Card
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -138,11 +137,44 @@ class _SettingPageState extends State<SettingPage> {
                             ),
                           ),
                         )
-                      : const Card(
-                          child: ListTile(
-                            leading: Icon(Icons.person),
-                            title: Text('กรุณาเข้าสู่ระบบ'),
-                            subtitle: Text('Please sign in'),
+                      : Card(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: const LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Color.fromARGB(255, 77, 77, 77),
+                                  Color.fromARGB(255, 128, 128, 128)
+                                ],
+                              ),
+                            ),
+                            child: const ListTile(
+                              leading: Icon(
+                                Icons.account_circle_outlined,
+                                size: 40,
+                                color: Colors.white,
+                              ),
+                              title: Text(
+                                'กรุณาเข้าสู่ระบบ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Please Sign In',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                   Card(

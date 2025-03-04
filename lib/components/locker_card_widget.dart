@@ -40,7 +40,7 @@ class LockerCard extends StatelessWidget {
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                isInUse && endReserveDate == null
+                isInUse && reserveDate != null && endReserveDate == null
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -61,7 +61,7 @@ class LockerCard extends StatelessWidget {
                           )
                         ],
                       )
-                    : !isInUse && endReserveDate != null
+                    : !isInUse && reserveDate != null && endReserveDate != null
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -69,7 +69,7 @@ class LockerCard extends StatelessWidget {
                                 'เริ่มใช้งานวันที่: ${getDateFormat(reserveDate!)}',
                               ),
                               Text(
-                                'สิ้นสุดวันที่: ${getDateFormat(reserveDate!)}',
+                                'สิ้นสุดวันที่: ${getDateFormat(endReserveDate!)}',
                               ),
                             ],
                           )
