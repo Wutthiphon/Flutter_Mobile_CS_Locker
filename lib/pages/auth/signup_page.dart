@@ -138,7 +138,6 @@ class _SignUpPageState extends State<SignUpPage> {
                             return 'กรุณากรอก E-mail ให้ถูกต้อง';
                           }
                           return null;
-                          return null;
                         },
                       ),
                       const SizedBox(height: 30),
