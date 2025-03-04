@@ -12,12 +12,12 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  bool isSignIn = false;
+  late Future<bool> _signInStatusFuture;
 
   @override
   void initState() {
     super.initState();
-    checkSignInStatus();
+    _signInStatusFuture = checkSignInStatus();
   }
 
   @override
@@ -25,32 +25,47 @@ class _HistoryPageState extends State<HistoryPage> {
     super.dispose();
   }
 
-  Future<void> checkSignInStatus() async {
-    bool signInStatus = await Storage().getData('AUTH_TOKEN') != null;
-    setState(() {
-      isSignIn = signInStatus;
-    });
+  Future<bool> checkSignInStatus() async {
+    return await Storage().getData('AUTH_TOKEN') != null;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 10.0,
-            left: 20.0,
-            right: 20.0,
-          ),
-          child: isSignIn
-              ? Column(
-                  children: [
-                    // LockerCard(),
-                  ],
-                )
-              : const Center(
-                  child: Text('กรุณาเข้าสู่ระบบ'),
+      body: Scaffold(
+        body: FutureBuilder<bool>(
+          future: _signInStatusFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+
+            bool isSignIn = snapshot.data ?? false;
+
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 10.0,
+                  left: 20.0,
+                  right: 20.0,
                 ),
+                child: isSignIn
+                    ? Column(
+                        children: [
+                          Text('Is Login')
+                          // LockerCard(),
+                        ],
+                      )
+                    : const Center(
+                        child: Text('กรุณาเข้าสู่ระบบ'),
+                      ),
+              ),
+            );
+          },
         ),
       ),
     );

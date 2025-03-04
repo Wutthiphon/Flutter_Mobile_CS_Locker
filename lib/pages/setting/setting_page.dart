@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cs_locker_project/components/dialog/confirmation_dialog.dart';
 import 'package:flutter_cs_locker_project/services/storage/storage.dart';
 
 // Pages
@@ -12,12 +13,12 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  bool isSignIn = false;
+  late Future<bool> _signInStatusFuture;
 
   @override
   void initState() {
     super.initState();
-    checkSignInStatus();
+    _signInStatusFuture = checkSignInStatus();
   }
 
   @override
@@ -25,93 +26,111 @@ class _SettingPageState extends State<SettingPage> {
     super.dispose();
   }
 
-  Future<void> checkSignInStatus() async {
-    bool signInStatus = await Storage().getData('AUTH_TOKEN') != null;
-    setState(() {
-      isSignIn = signInStatus;
-    });
+  Future<bool> checkSignInStatus() async {
+    return await Storage().getData('AUTH_TOKEN') != null;
   }
 
   void onSignOut() {
-    Storage().remove('AUTH_TOKEN');
-    Storage().remove('AUTH_USER');
-    checkSignInStatus();
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const AppLayout(),
-      ),
-      (route) => false,
+    showConfirmationDialog(
+      context: context,
+      title: 'ออกจากระบบ',
+      content: 'คุณต้องการออกจากระบบหรือไม่?',
+      onConfirm: () {
+        Storage().remove('AUTH_TOKEN');
+        Storage().remove('AUTH_USER');
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AppLayout(),
+          ),
+          (route) => false,
+        );
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 10.0,
-            left: 10.0,
-            right: 10.0,
-          ),
-          child: Column(
-            children: [
-              isSignIn
-                  ? const Card(
-                      child: ListTile(
-                        leading: Icon(Icons.person),
-                        title: Text('ชื่อ นามสกุล'),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+      body: FutureBuilder<bool>(
+        future: _signInStatusFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          bool isSignIn = snapshot.data ?? false;
+
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 10.0,
+                left: 10.0,
+                right: 10.0,
+              ),
+              child: Column(
+                children: [
+                  isSignIn
+                      ? const Card(
+                          child: ListTile(
+                            leading: Icon(Icons.person),
+                            title: Text('ชื่อ นามสกุล'),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('E-mail'),
+                              ],
+                            ),
+                          ),
+                        )
+                      : const Card(
+                          child: ListTile(
+                            leading: Icon(Icons.person),
+                            title: Text('กรุณาเข้าสู่ระบบ'),
+                            subtitle: Text('Please sign in'),
+                          ),
+                        ),
+                  isSignIn
+                      ? ListView(
+                          shrinkWrap: true,
                           children: [
-                            Text('E-mail'),
+                            const SizedBox(height: 10),
+                            Card(
+                              child: ListTile(
+                                leading: const Icon(Icons.lock),
+                                title: const Text('เปลี่ยนรหัสผ่าน'),
+                                trailing: const Icon(Icons.arrow_forward_ios),
+                                onTap: () {},
+                              ),
+                            ),
+                            Card(
+                              child: ListTile(
+                                leading: const Icon(Icons.logout),
+                                title: const Text('ออกจากระบบ'),
+                                trailing: const Icon(Icons.arrow_forward_ios),
+                                onTap: () => onSignOut(),
+                              ),
+                            ),
+                            const SizedBox(height: 30),
                           ],
-                        ),
-                      ),
-                    )
-                  : const Card(
-                      child: ListTile(
-                        leading: Icon(Icons.person),
-                        title: Text('กรุณาเข้าสู่ระบบ'),
-                        subtitle: Text('Please sign in'),
-                      ),
-                    ),
-              isSignIn
-                  ? ListView(
-                      shrinkWrap: true,
+                        )
+                      : const SizedBox(height: 10),
+                  const Center(
+                    child: Column(
                       children: [
-                        const SizedBox(height: 10),
-                        Card(
-                          child: ListTile(
-                            leading: const Icon(Icons.lock),
-                            title: const Text('เปลี่ยนรหัสผ่าน'),
-                            trailing: const Icon(Icons.arrow_forward_ios),
-                            onTap: () {},
-                          ),
-                        ),
-                        Card(
-                          child: ListTile(
-                            leading: const Icon(Icons.logout),
-                            title: const Text('ออกจากระบบ'),
-                            trailing: const Icon(Icons.arrow_forward_ios),
-                            onTap: () => onSignOut(),
-                          ),
-                        ),
-                        const SizedBox(height: 30),
+                        Text('LockLock | Version: 1.0.0'),
                       ],
-                    )
-                  : const SizedBox(height: 10),
-              const Center(
-                child: Column(
-                  children: [
-                    Text('LockLock | Version: 1.0.0'),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
