@@ -47,7 +47,7 @@ class TopMenu extends StatelessWidget implements PreferredSizeWidget {
             ),
       actions: [
         !isSignIn
-            ? IconButton.outlined(
+            ? IconButton(
                 icon: const Icon(Icons.login),
                 style: ButtonStyle(
                   foregroundColor: WidgetStateProperty.all(
