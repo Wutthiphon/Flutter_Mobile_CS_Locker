@@ -21,3 +21,15 @@ class LoginUserData {
     required this.password,
   });
 }
+
+class UserData {
+  final String email;
+  final String firstname;
+  final String lastname;
+
+  UserData({
+    required this.email,
+    required this.firstname,
+    required this.lastname,
+  });
+}

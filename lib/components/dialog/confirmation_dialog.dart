@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// Components
+// Custom Components
 import 'package:flutter_cs_locker_project/components/custom_elevated_button.dart';
 
 Future<void> showConfirmationDialog({
@@ -8,38 +8,80 @@ Future<void> showConfirmationDialog({
   required String title,
   required String content,
   required VoidCallback onConfirm,
-  VoidCallback? onReject, // onReject เป็นตัวเลือกไม่จำเป็น
+  VoidCallback? onReject,
 }) async {
   bool? result = await showDialog<bool>(
     context: context,
-    barrierDismissible: false, // ไม่ให้ปิด Dialog โดยการคลิกนอก Dialog
+    barrierDismissible: false,
     builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(false); // ยกเลิก
-              if (onReject != null) {
-                onReject();
-              }
-            },
-            child: const Text("ยกเลิก"),
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.warning,
+                size: 60,
+                color: Colors.orange,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  content,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.black87,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                      if (onReject != null) {
+                        onReject();
+                      }
+                    },
+                    label: 'ยกเลิก',
+                    color: 'secondary',
+                  ),
+                  const SizedBox(width: 10),
+                  CustomElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                      onConfirm();
+                    },
+                    label: 'ยืนยัน',
+                    color: 'primary',
+                  ),
+                ],
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(true); // ยืนยัน
-              onConfirm(); // เรียกใช้ onConfirm
-            },
-            child: const Text("ยืนยัน"),
-          ),
-        ],
+        ),
       );
     },
   );
 
   if (result == true) {
-    onConfirm(); // เรียกใช้ onConfirm หากเลือก "ยืนยัน"
+    onConfirm();
   }
 }

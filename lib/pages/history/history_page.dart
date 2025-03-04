@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cs_locker_project/services/storage/storage.dart';
 
-// Components
+// Custom Components
 import 'package:flutter_cs_locker_project/components/locker_card_widget.dart';
 
 class HistoryPage extends StatefulWidget {

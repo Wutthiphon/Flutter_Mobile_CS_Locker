@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cs_locker_project/components/dialog/confirmation_dialog.dart';
 import 'package:flutter_cs_locker_project/services/storage/storage.dart';
+
+// Data Type
+import 'package:flutter_cs_locker_project/services/data_type.dart';
+
+// Custom Components
+import 'package:flutter_cs_locker_project/components/dialog/confirmation_dialog.dart';
 
 // Pages
 import 'package:flutter_cs_locker_project/pages/app_layout.dart';
@@ -14,6 +19,7 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   late Future<bool> _signInStatusFuture;
+  late UserData userData;
 
   @override
   void initState() {
@@ -27,7 +33,22 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Future<bool> checkSignInStatus() async {
-    return await Storage().getData('AUTH_TOKEN') != null;
+    bool isSignIn = await Storage().getData('AUTH_TOKEN') != null;
+    if (isSignIn) {
+      var test = Storage().getJsonData('AUTH_USER').toString();
+      debugPrint(test);
+      Map<String, dynamic>? userDataString =
+          (await Storage().getJsonData('AUTH_USER'));
+      if (userDataString != null) {
+        userData = UserData(
+          email: userDataString['email'] ?? '',
+          firstname: userDataString['firstname'] ?? '',
+          lastname: userDataString['lastname'] ?? '',
+        );
+      }
+    }
+
+    return isSignIn;
   }
 
   void onSignOut() {
@@ -75,15 +96,44 @@ class _SettingPageState extends State<SettingPage> {
               child: Column(
                 children: [
                   isSignIn
-                      ? const Card(
-                          child: ListTile(
-                            leading: Icon(Icons.person),
-                            title: Text('ชื่อ นามสกุล'),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('E-mail'),
-                              ],
+                      ? Card(
+                          // Gradient Card
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: const LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Color.fromARGB(255, 76, 108, 145),
+                                  Color.fromARGB(255, 104, 162, 196)
+                                ],
+                              ),
+                            ),
+                            child: ListTile(
+                              leading: const Icon(
+                                Icons.account_circle_outlined,
+                                size: 40,
+                                color: Colors.white,
+                              ),
+                              title: Text(
+                                '${userData.firstname} ${userData.lastname}',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Email: ${userData.email}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         )
@@ -94,11 +144,27 @@ class _SettingPageState extends State<SettingPage> {
                             subtitle: Text('Please sign in'),
                           ),
                         ),
+                  Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.info),
+                      title: const Text('เกี่ยวกับแอปพลิเคชัน'),
+                      trailing: const Icon(Icons.arrow_forward_ios),
+                      onTap: () {},
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                   isSignIn
                       ? ListView(
                           shrinkWrap: true,
                           children: [
-                            const SizedBox(height: 10),
+                            Card(
+                              child: ListTile(
+                                leading: const Icon(Icons.edit),
+                                title: const Text('แก้ไขโปรไฟล์'),
+                                trailing: const Icon(Icons.arrow_forward_ios),
+                                onTap: () {},
+                              ),
+                            ),
                             Card(
                               child: ListTile(
                                 leading: const Icon(Icons.lock),
@@ -115,14 +181,13 @@ class _SettingPageState extends State<SettingPage> {
                                 onTap: () => onSignOut(),
                               ),
                             ),
-                            const SizedBox(height: 30),
                           ],
                         )
                       : const SizedBox(height: 10),
                   const Center(
                     child: Column(
                       children: [
-                        Text('LockLock | Version: 1.0.0'),
+                        Text('Lock!Lock! | Version: 1.0.0'),
                       ],
                     ),
                   )

@@ -74,13 +74,13 @@ class _SignInPageState extends State<SignInPage> {
             return;
           }
           Storage().saveData('AUTH_TOKEN', res['token']);
-          Storage().saveData(
+          Storage().saveJsonData(
             'AUTH_USER',
             {
               'email': res['email'],
               'firstname': res['firstname'],
               'lastname': res['lastname'],
-            }.toString(),
+            },
           );
           Navigator.pushAndRemoveUntil(
             context,
