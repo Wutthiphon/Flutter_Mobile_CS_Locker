@@ -53,7 +53,7 @@ class TopMenu extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         !isSignIn
             ? IconButton(
-                icon: const Icon(Icons.login),
+                icon: const Icon(Icons.login_rounded),
                 style: ButtonStyle(
                   foregroundColor: WidgetStateProperty.all(
                       activeIndex == 0 ? Colors.blueGrey : Colors.white),
