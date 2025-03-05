@@ -23,6 +23,7 @@ class SignUpOTPPage extends StatefulWidget {
 class _SignUpOTPPageState extends State<SignUpOTPPage> {
   HttpAuthAPIService httpAuthAPIService = HttpAuthAPIService();
 
+  String otpRef = '2F23F6';
   String otpCode = '';
   bool isApiLoading = false;
   bool isError = false;
@@ -158,13 +159,21 @@ class _SignUpOTPPageState extends State<SignUpOTPPage> {
                   onSubmit: (String code) => updateOTPCode(code),
                 ),
                 const SizedBox(height: 10),
+                Text(
+                  'Ref: $otpRef',
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 10),
                 isError
                     ? Text(
                         errorMessage,
                         style: const TextStyle(color: Colors.red),
                       )
                     : const SizedBox(),
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
                 CustomElevatedButton(
                   label: 'ดำเนินการต่อ',
                   fullWidth: true,
