@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cs_locker_project/services/api/auth_api.dart';
-import 'package:flutter_cs_locker_project/services/storage/storage.dart';
 
 // Data Type
 import 'package:flutter_cs_locker_project/services/data_type.dart';
@@ -11,7 +10,7 @@ import 'package:flutter_cs_locker_project/components/custom_elevated_button.dart
 import 'package:flutter_cs_locker_project/components/dialog/loading_dialog.dart';
 
 // Pages
-import 'package:flutter_cs_locker_project/pages/auth/signup_success_page.dart';
+import 'package:flutter_cs_locker_project/pages/auth/signup_otp_page.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -67,47 +66,40 @@ class _SignUpPageState extends State<SignUpPage> {
         return;
       }
 
-      showLoadingDialog(context);
-      isApiLoading = true;
-
-      httpAuthAPIService
-          .register(
-        RegisterUserData(
-          firstname: signupUserData.firstname.text,
-          lastname: signupUserData.lastname.text,
-          email: signupUserData.email.text,
-          password: signupUserData.password.text,
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SignUpOTPPage(),
         ),
-      )
-          .then(
-        (res) {
-          isApiLoading = false;
-          hideLoadingDialog(context);
-          if (res.containsKey('error') && !!res['error']) {
-            setState(() {
-              isError = true;
-              errorMessage = res['message'];
-            });
-            return;
-          }
-          // Wait for OTP Page
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => const SignUpSuccessPage(),
-          //   ),
-          // );
-          // Storage().saveData('AUTH_TOKEN', res['token']);
-          // Storage().saveJsonData(
-          //   'AUTH_USER',
-          //   {
-          //     'email': res['email'],
-          //     'firstname': res['firstname'],
-          //     'lastname': res['lastname'],
-          //   },
-          // );
-        },
       );
+
+      // showLoadingDialog(context);
+      // isApiLoading = true;
+
+      // httpAuthAPIService
+      //     .register(
+      //   RegisterUserData(
+      //     firstname: signupUserData.firstname.text,
+      //     lastname: signupUserData.lastname.text,
+      //     email: signupUserData.email.text,
+      //     password: signupUserData.password.text,
+      //   ),
+      // )
+      //     .then(
+      //   (res) {
+      //     isApiLoading = false;
+      //     hideLoadingDialog(context);
+      //     if (res.containsKey('error') && !!res['error']) {
+      //       setState(() {
+      //         isError = true;
+      //         errorMessage = res['message'];
+      //       });
+      //       return;
+      //     }
+
+      //     // Send To OTP Page With Params
+      //   },
+      // );
     }
   }
 
@@ -127,12 +119,20 @@ class _SignUpPageState extends State<SignUpPage> {
               : Colors.transparent,
           child: AppBar(
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+              ),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
-            title: const Text('สมัครสมาชิก'),
+            title: const Text(
+              'สมัครสมาชิก',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
             centerTitle: true,
             elevation: 0,
             backgroundColor: Colors.transparent,
