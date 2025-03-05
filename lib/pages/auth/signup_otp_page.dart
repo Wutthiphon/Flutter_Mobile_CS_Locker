@@ -120,10 +120,9 @@ class _SignUpOTPPageState extends State<SignUpOTPPage> {
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
-                const Icon(
-                  Icons.password,
-                  size: 125,
-                  color: Color.fromARGB(255, 76, 116, 175),
+                Image.asset(
+                  './assets/icon/otp.png',
+                  width: 250,
                 ),
                 const SizedBox(height: 10),
                 const Text(
