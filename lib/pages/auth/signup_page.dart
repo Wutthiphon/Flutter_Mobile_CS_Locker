@@ -58,6 +58,14 @@ class _SignUpPageState extends State<SignUpPage> {
     });
 
     if (registerFormKey.currentState!.validate() && !isApiLoading) {
+      if (signupUserData.password.text.length < 8) {
+        setState(() {
+          isError = true;
+          errorMessage = 'รหัสผ่านต้องมีความยาวมากกว่า 8 ตัวอักษร';
+        });
+        return;
+      }
+
       if (signupUserData.password.text != signupUserData.repassword.text) {
         setState(() {
           isError = true;

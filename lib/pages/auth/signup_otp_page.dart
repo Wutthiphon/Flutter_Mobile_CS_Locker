@@ -28,6 +28,17 @@ class _SignUpOTPPageState extends State<SignUpOTPPage> {
   bool isError = false;
   String errorMessage = '';
 
+  void updateOTPCode(String optCode) {
+    if (isError && optCode.length == 6) {
+      setState(() {
+        debugPrint('Clear Error');
+        isError = false;
+        errorMessage = '';
+      });
+    }
+    otpCode = optCode;
+  }
+
   void onNextStep() {
     setState(() {
       isError = false;
@@ -143,8 +154,8 @@ class _SignUpOTPPageState extends State<SignUpOTPPage> {
                   focusedBorderColor: const Color.fromARGB(255, 10, 81, 147),
                   showFieldAsBox: true,
                   showCursor: true,
-                  onSubmit: (String verificationCode) =>
-                      otpCode = verificationCode,
+                  onCodeChanged: (String code) => updateOTPCode(code),
+                  onSubmit: (String code) => updateOTPCode(code),
                 ),
                 const SizedBox(height: 10),
                 isError
