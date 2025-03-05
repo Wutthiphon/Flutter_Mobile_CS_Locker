@@ -65,7 +65,7 @@ class _SignUpSuccessPageState extends State<SignUpSuccessPage> {
                 ),
                 const SizedBox(height: 10),
                 const Text(
-                  'สมัครสมาชิกเรียบร้อยแล้ว!\nคุณสามารถใช้งานล็อคเกอร์ได้แล้ว',
+                  'สมัครสมาชิกเรียบร้อยแล้ว!\nคุณสามารถใช้งาน Lock!Lock! ได้แล้ว',
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 50),

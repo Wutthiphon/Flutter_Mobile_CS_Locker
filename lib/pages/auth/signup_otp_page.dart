@@ -34,54 +34,64 @@ class _SignUpOTPPageState extends State<SignUpOTPPage> {
       errorMessage = '';
     });
 
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const SignUpSuccessPage(),
-      ),
-      (route) => false,
-    );
+    if (!isApiLoading) {
+      if (otpCode == '' || otpCode.length != 6) {
+        setState(() {
+          isError = true;
+          errorMessage = 'กรุณากรอกรหัส OTP ให้ครบ 6 หลัก';
+        });
+        return;
+      }
 
-    // showLoadingDialog(context);
-    // isApiLoading = true;
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SignUpSuccessPage(),
+        ),
+        (route) => false,
+      );
 
-    // httpAuthAPIService
-    //     .register(
-    //   RegisterUserData(
-    //     firstname: signupUserData.firstname.text,
-    //     lastname: signupUserData.lastname.text,
-    //     email: signupUserData.email.text,
-    //     password: signupUserData.password.text,
-    //   ),
-    // )
-    //     .then(
-    //   (res) {
-    //     isApiLoading = false;
-    //     hideLoadingDialog(context);
-    //     if (res.containsKey('error') && !!res['error']) {
-    //       setState(() {
-    //         isError = true;
-    //         errorMessage = res['message'];
-    //       });
-    //       return;
-    //     }
-    //     // Navigator.pushReplacement(
-    //     //   context,
-    //     //   MaterialPageRoute(
-    //     //     builder: (context) => const SignUpSuccessPage(),
-    //     //   ),
-    //     // );
-    //     // Storage().saveData('AUTH_TOKEN', res['token']);
-    //     // Storage().saveJsonData(
-    //     //   'AUTH_USER',
-    //     //   {
-    //     //     'email': res['email'],
-    //     //     'firstname': res['firstname'],
-    //     //     'lastname': res['lastname'],
-    //     //   },
-    //     // );
-    //   },
-    // );
+      // showLoadingDialog(context);
+      // isApiLoading = true;
+
+      // httpAuthAPIService
+      //     .register(
+      //   RegisterUserData(
+      //     firstname: signupUserData.firstname.text,
+      //     lastname: signupUserData.lastname.text,
+      //     email: signupUserData.email.text,
+      //     password: signupUserData.password.text,
+      //   ),
+      // )
+      //     .then(
+      //   (res) {
+      //     isApiLoading = false;
+      //     hideLoadingDialog(context);
+      //     if (res.containsKey('error') && !!res['error']) {
+      //       setState(() {
+      //         isError = true;
+      //         errorMessage = res['message'];
+      //       });
+      //       return;
+      //     }
+      //     // Navigator.pushReplacement(
+      //     //   context,
+      //     //   MaterialPageRoute(
+      //     //     builder: (context) => const SignUpSuccessPage(),
+      //     //   ),
+      //     // );
+      //     // Storage().saveData('AUTH_TOKEN', res['token']);
+      //     // Storage().saveJsonData(
+      //     //   'AUTH_USER',
+      //     //   {
+      //     //     'email': res['email'],
+      //     //     'firstname': res['firstname'],
+      //     //     'lastname': res['lastname'],
+      //     //   },
+      //     // );
+      //   },
+      // );
+    }
   }
 
   @override
@@ -131,12 +141,19 @@ class _SignUpOTPPageState extends State<SignUpOTPPage> {
                 const SizedBox(height: 20),
                 OtpTextField(
                   numberOfFields: 6,
-                  borderColor: const Color.fromARGB(255, 59, 118, 173),
+                  focusedBorderColor: const Color.fromARGB(255, 10, 81, 147),
                   showFieldAsBox: true,
                   showCursor: true,
                   onSubmit: (String verificationCode) =>
                       otpCode = verificationCode,
                 ),
+                const SizedBox(height: 10),
+                isError
+                    ? Text(
+                        errorMessage,
+                        style: const TextStyle(color: Colors.red),
+                      )
+                    : const SizedBox(),
                 const SizedBox(height: 50),
                 CustomElevatedButton(
                   label: 'ดำเนินการต่อ',
