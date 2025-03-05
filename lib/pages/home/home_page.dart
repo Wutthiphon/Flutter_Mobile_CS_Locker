@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                                 color: Colors.white,
                               ),
                               title: Text(
-                                '${userData.firstname} ${userData.lastname}',
+                                'ยินดีต้อนรับ ${userData.firstname} ${userData.lastname}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
