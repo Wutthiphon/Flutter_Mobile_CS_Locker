@@ -127,18 +127,18 @@ class _SignUpPageState extends State<SignUpPage> {
               : Colors.transparent,
           child: AppBar(
             leading: IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.arrow_back_ios,
-                color: Colors.white,
+                color: isKeyboardOpen ? Colors.black : Colors.white,
               ),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
-            title: const Text(
+            title: Text(
               'สมัครสมาชิก',
               style: TextStyle(
-                color: Colors.white,
+                color: isKeyboardOpen ? Colors.black : Colors.white,
               ),
             ),
             centerTitle: true,
