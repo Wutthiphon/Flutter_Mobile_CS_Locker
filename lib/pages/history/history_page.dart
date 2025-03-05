@@ -57,6 +57,7 @@ class _HistoryPageState extends State<HistoryPage> {
                     ? Column(
                         children: [
                           LockerCard(
+                            lockerID: 1,
                             lockerNumber: 1,
                             isInUse: true,
                             passCode: '123456',

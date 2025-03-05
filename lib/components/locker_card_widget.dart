@@ -5,6 +5,7 @@ import 'package:flutter_cs_locker_project/components/custom_elevated_button.dart
 
 class LockerCard extends StatelessWidget {
   final int lockerNumber;
+  final int lockerID;
   final bool isInUse;
   final String? passCode;
   final DateTime? reserveDate;
@@ -13,6 +14,7 @@ class LockerCard extends StatelessWidget {
   const LockerCard({
     super.key,
     required this.lockerNumber,
+    required this.lockerID,
     required this.isInUse,
     this.passCode,
     this.reserveDate,
