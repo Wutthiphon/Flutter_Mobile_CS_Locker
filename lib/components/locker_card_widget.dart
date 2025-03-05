@@ -38,11 +38,23 @@ class _LockerCardState extends State<LockerCard> {
       title: "ยืนยันการจองล็อคเกอร์",
       content:
           "คุณต้องการจองล็อคเกอร์ ${widget.lockerData.lockerNumber} ใช่หรือไม่?",
-      onConfirm: () {},
+      onConfirm: () {
+        // Call API to reserve locker
+      },
     );
   }
 
-  void onEndReserveLocker() {}
+  void onEndReserveLocker() {
+    showConfirmationDialog(
+      context: context,
+      title: "ยืนยันการสิ้นสุดการใช้งานล็อคเกอร์",
+      content:
+          "คุณต้องการสิ้นสุดการใช้งานล็อคเกอร์ ${widget.lockerData.lockerNumber} ใช่หรือไม่?",
+      onConfirm: () {
+        // Call API to end reserve locker
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
