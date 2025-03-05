@@ -61,6 +61,9 @@ class _AppLayoutState extends State<AppLayout> {
 
   Future<void> checkSignInStatus() async {
     bool signInStatus = await Storage().getData('AUTH_TOKEN') != null;
+
+// Check Token is expired
+
     setState(() {
       isSignIn = signInStatus;
     });

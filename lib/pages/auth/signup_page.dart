@@ -74,40 +74,41 @@ class _SignUpPageState extends State<SignUpPage> {
         return;
       }
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const SignUpOTPPage(),
+      showLoadingDialog(context);
+      isApiLoading = true;
+
+      httpAuthAPIService
+          .register(
+        RegisterUserData(
+          firstname: signupUserData.firstname.text,
+          lastname: signupUserData.lastname.text,
+          email: signupUserData.email.text,
+          password: signupUserData.password.text,
         ),
+      )
+          .then(
+        (res) {
+          isApiLoading = false;
+          hideLoadingDialog(context);
+          if (res.containsKey('error') && !!res['error']) {
+            setState(() {
+              isError = true;
+              errorMessage = res['message'];
+            });
+            return;
+          }
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SignUpOTPPage(
+                userID: (res['userId'] as int),
+                otpRef: (res['refCode'] as String),
+              ),
+            ),
+          );
+        },
       );
-
-      // showLoadingDialog(context);
-      // isApiLoading = true;
-
-      // httpAuthAPIService
-      //     .register(
-      //   RegisterUserData(
-      //     firstname: signupUserData.firstname.text,
-      //     lastname: signupUserData.lastname.text,
-      //     email: signupUserData.email.text,
-      //     password: signupUserData.password.text,
-      //   ),
-      // )
-      //     .then(
-      //   (res) {
-      //     isApiLoading = false;
-      //     hideLoadingDialog(context);
-      //     if (res.containsKey('error') && !!res['error']) {
-      //       setState(() {
-      //         isError = true;
-      //         errorMessage = res['message'];
-      //       });
-      //       return;
-      //     }
-
-      //     // Send To OTP Page With Params
-      //   },
-      // );
     }
   }
 

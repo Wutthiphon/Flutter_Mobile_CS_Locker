@@ -77,10 +77,6 @@ class _SettingPageState extends State<SettingPage> {
       body: FutureBuilder<bool>(
         future: _signInStatusFuture,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           }

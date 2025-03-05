@@ -1,29 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cs_locker_project/components/dialog/confirmation_dialog.dart';
+
+// Data Type
+import 'package:flutter_cs_locker_project/services/data_type.dart';
 
 // Custom Components
+import 'package:flutter_cs_locker_project/components/dialog/alert_dialog.dart';
 import 'package:flutter_cs_locker_project/components/custom_elevated_button.dart';
 
-class LockerCard extends StatelessWidget {
-  final int lockerNumber;
-  final int lockerID;
-  final bool isInUse;
-  final String? passCode;
-  final DateTime? reserveDate;
-  final DateTime? endReserveDate;
+class LockerCard extends StatefulWidget {
+  final Locker lockerData;
+  final bool? isLogin;
 
   const LockerCard({
     super.key,
-    required this.lockerNumber,
-    required this.lockerID,
-    required this.isInUse,
-    this.passCode,
-    this.reserveDate,
-    this.endReserveDate,
+    required this.lockerData,
+    this.isLogin,
   });
 
-  String getDateFormat(DateTime date) {
-    return '${date.day}/${date.month}/${date.year + 543}';
+  @override
+  State<LockerCard> createState() => _LockerCardState();
+}
+
+class _LockerCardState extends State<LockerCard> {
+  void onReserveLocker() {
+    if (widget.isLogin == null || widget.isLogin == false) {
+      showAlertDialog(
+        context: context,
+        title: 'คำเตือน',
+        content: 'กรุณาเข้าสู่ระบบก่อนจองล็อคเกอร์',
+      );
+      return;
+    }
+
+    showConfirmationDialog(
+      context: context,
+      title: "ยืนยันการจองล็อคเกอร์",
+      content:
+          "คุณต้องการจองล็อคเกอร์ ${widget.lockerData.lockerNumber} ใช่หรือไม่?",
+      onConfirm: () {},
+    );
   }
+
+  void onEndReserveLocker() {}
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +51,7 @@ class LockerCard extends StatelessWidget {
         children: [
           ListTile(
             title: Text(
-              'ล็อคเกอร์ $lockerNumber',
+              'ล็อคเกอร์ ${widget.lockerData.lockerNumber}',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -42,18 +61,20 @@ class LockerCard extends StatelessWidget {
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                isInUse && reserveDate != null && endReserveDate == null
+                widget.lockerData.isInUse &&
+                        widget.lockerData.reserveDate != null &&
+                        widget.lockerData.endReserveDate == null
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'เริ่มใช้งานวันที่: ${getDateFormat(reserveDate!)}',
+                            'เริ่มใช้งานวันที่: ${widget.lockerData.getDateFormat(widget.lockerData.reserveDate!)}',
                           ),
                           Row(
                             children: [
                               const Text('รหัสผ่าน: '),
                               Text(
-                                passCode!,
+                                widget.lockerData.passCode!,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 22,
@@ -63,15 +84,17 @@ class LockerCard extends StatelessWidget {
                           )
                         ],
                       )
-                    : !isInUse && reserveDate != null && endReserveDate != null
+                    : !widget.lockerData.isInUse &&
+                            widget.lockerData.reserveDate != null &&
+                            widget.lockerData.endReserveDate != null
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'เริ่มใช้งานวันที่: ${getDateFormat(reserveDate!)}',
+                                'เริ่มใช้งานวันที่: ${widget.lockerData.getDateFormat(widget.lockerData.reserveDate!)}',
                               ),
                               Text(
-                                'สิ้นสุดวันที่: ${getDateFormat(endReserveDate!)}',
+                                'สิ้นสุดวันที่: ${widget.lockerData.getDateFormat(widget.lockerData.endReserveDate!)}',
                               ),
                             ],
                           )
@@ -85,21 +108,21 @@ class LockerCard extends StatelessWidget {
             ),
             trailing: const Icon(Icons.lock),
           ),
-          endReserveDate == null
+          widget.lockerData.endReserveDate == null
               ? Padding(
                   padding: const EdgeInsets.all(6),
                   child: OverflowBar(
                     alignment: MainAxisAlignment.end,
                     children: [
-                      isInUse
+                      widget.lockerData.isInUse
                           ? CustomElevatedButton(
-                              onPressed: () {},
+                              onPressed: () => onEndReserveLocker(),
                               size: 'small',
                               color: 'secondary',
                               label: 'สิ้นสุดการใช้งาน',
                             )
                           : CustomElevatedButton(
-                              onPressed: () {},
+                              onPressed: () => onReserveLocker(),
                               size: 'small',
                               color: 'primary',
                               label: 'ใช้งาน',

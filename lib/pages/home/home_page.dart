@@ -91,9 +91,9 @@ class _HomePageState extends State<HomePage> {
                                 size: 40,
                                 color: Colors.white,
                               ),
-                              title: Text(
-                                'ยินดีต้อนรับ ${userData.firstname} ${userData.lastname}',
-                                style: const TextStyle(
+                              title: const Text(
+                                'ยินดีต้อนรับ',
+                                style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Email: ${userData.email}',
+                                    '${userData.firstname} ${userData.lastname}',
                                     style: const TextStyle(
                                       color: Colors.white,
                                     ),

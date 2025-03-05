@@ -14,7 +14,14 @@ import 'package:flutter_cs_locker_project/components/dialog/loading_dialog.dart'
 import 'package:flutter_cs_locker_project/pages/auth/signup_success_page.dart';
 
 class SignUpOTPPage extends StatefulWidget {
-  const SignUpOTPPage({super.key});
+  int userID;
+  String otpRef;
+
+  SignUpOTPPage({
+    super.key,
+    required this.userID,
+    required this.otpRef,
+  });
 
   @override
   State<SignUpOTPPage> createState() => _SignUpOTPPageState();
@@ -23,7 +30,6 @@ class SignUpOTPPage extends StatefulWidget {
 class _SignUpOTPPageState extends State<SignUpOTPPage> {
   HttpAuthAPIService httpAuthAPIService = HttpAuthAPIService();
 
-  String otpRef = '2F23F6';
   String otpCode = '';
   bool isApiLoading = false;
   bool isError = false;
@@ -55,54 +61,46 @@ class _SignUpOTPPageState extends State<SignUpOTPPage> {
         return;
       }
 
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const SignUpSuccessPage(),
+      showLoadingDialog(context);
+      isApiLoading = true;
+
+      httpAuthAPIService
+          .registerVerifyOTP(
+        RegisterVerifyOTP(
+          otpCode: otpCode,
+          otpRef: widget.otpRef,
+          userID: widget.userID,
         ),
-        (route) => false,
+      )
+          .then(
+        (res) {
+          isApiLoading = false;
+          hideLoadingDialog(context);
+          if (res.containsKey('error') && !!res['error']) {
+            setState(() {
+              isError = true;
+              errorMessage = res['message'];
+            });
+            return;
+          }
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SignUpSuccessPage(),
+            ),
+          );
+          Storage().saveData('AUTH_TOKEN', res['token']);
+          Storage().saveJsonData(
+            'AUTH_USER',
+            {
+              'email': res['email'],
+              'firstname': res['firstname'],
+              'lastname': res['lastname'],
+            },
+          );
+        },
       );
-
-      // showLoadingDialog(context);
-      // isApiLoading = true;
-
-      // httpAuthAPIService
-      //     .register(
-      //   RegisterUserData(
-      //     firstname: signupUserData.firstname.text,
-      //     lastname: signupUserData.lastname.text,
-      //     email: signupUserData.email.text,
-      //     password: signupUserData.password.text,
-      //   ),
-      // )
-      //     .then(
-      //   (res) {
-      //     isApiLoading = false;
-      //     hideLoadingDialog(context);
-      //     if (res.containsKey('error') && !!res['error']) {
-      //       setState(() {
-      //         isError = true;
-      //         errorMessage = res['message'];
-      //       });
-      //       return;
-      //     }
-      //     // Navigator.pushReplacement(
-      //     //   context,
-      //     //   MaterialPageRoute(
-      //     //     builder: (context) => const SignUpSuccessPage(),
-      //     //   ),
-      //     // );
-      //     // Storage().saveData('AUTH_TOKEN', res['token']);
-      //     // Storage().saveJsonData(
-      //     //   'AUTH_USER',
-      //     //   {
-      //     //     'email': res['email'],
-      //     //     'firstname': res['firstname'],
-      //     //     'lastname': res['lastname'],
-      //     //   },
-      //     // );
-      //   },
-      // );
     }
   }
 
@@ -160,7 +158,7 @@ class _SignUpOTPPageState extends State<SignUpOTPPage> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'Ref: $otpRef',
+                  'Ref: ${widget.otpRef}',
                   style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 12,

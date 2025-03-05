@@ -13,6 +13,7 @@ import 'package:flutter_cs_locker_project/components/dialog/loading_dialog.dart'
 // Pages
 import 'package:flutter_cs_locker_project/pages/app_layout.dart';
 import 'package:flutter_cs_locker_project/pages/auth/signup_page.dart';
+import 'package:flutter_cs_locker_project/pages/auth/signup_otp_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -46,7 +47,7 @@ class _SignInPageState extends State<SignInPage> {
     super.dispose();
   }
 
-  void onSignIn() async {
+  void onSignIn() {
     if (signinFormKey.currentState!.validate() && !isApiLoading) {
       showLoadingDialog(context);
       setState(() {
@@ -64,6 +65,7 @@ class _SignInPageState extends State<SignInPage> {
       )
           .then(
         (res) {
+          debugPrint(res.toString());
           isApiLoading = false;
           hideLoadingDialog(context);
           if (res.containsKey('error') && !!res['error']) {
@@ -73,6 +75,20 @@ class _SignInPageState extends State<SignInPage> {
             });
             return;
           }
+
+          if (res.containsKey('verify_status') && !res['verify_status']) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SignUpOTPPage(
+                  userID: (res['userId'] as int),
+                  otpRef: (res['refCode'] as String),
+                ),
+              ),
+            );
+            return;
+          }
+
           Storage().saveData('AUTH_TOKEN', res['token']);
           Storage().saveJsonData(
             'AUTH_USER',
