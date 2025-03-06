@@ -29,7 +29,17 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   bool isError = false;
   String errorMessage = '';
 
-  void onSignUp() {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void onSubmit() {
     setState(() {
       isError = false;
       errorMessage = '';
@@ -176,7 +186,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       color: 'primary',
                       fullWidth: true,
                       rounded: true,
-                      onPressed: onSignUp,
+                      onPressed: onSubmit,
                     ),
                   ],
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cs_locker_project/services/storage/storage.dart';
 import 'package:flutter_cs_locker_project/components/custom_text_form_filed.dart';
 import 'package:flutter_cs_locker_project/services/api/auth_api.dart';
 
@@ -17,6 +18,9 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  late Future<bool> _signInStatusFuture;
+  late UserData userData;
+
   HttpAuthAPIService httpAuthAPIService = HttpAuthAPIService();
 
   var editProfileFormKey = GlobalKey<FormState>();
@@ -28,7 +32,40 @@ class _EditProfilePageState extends State<EditProfilePage> {
   bool isError = false;
   String errorMessage = '';
 
-  void onSignUp() {
+  @override
+  void initState() {
+    super.initState();
+    _signInStatusFuture = checkSignInStatus();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<bool> checkSignInStatus() async {
+    bool isSignIn = await Storage().getData('AUTH_TOKEN') != null;
+    if (isSignIn) {
+      var test = Storage().getJsonData('AUTH_USER').toString();
+      debugPrint(test);
+      Map<String, dynamic>? userDataString =
+          (await Storage().getJsonData('AUTH_USER'));
+      if (userDataString != null) {
+        userData = UserData(
+          email: userDataString['email'] ?? '',
+          firstname: userDataString['firstname'] ?? '',
+          lastname: userDataString['lastname'] ?? '',
+        );
+
+        changePasswordData.firstname.text = userData.firstname;
+        changePasswordData.lastname.text = userData.lastname;
+      }
+    }
+
+    return isSignIn;
+  }
+
+  void onSubmit() {
     setState(() {
       isError = false;
       errorMessage = '';
@@ -109,74 +146,83 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Form(
-              key: editProfileFormKey,
-              child: Column(
-                children: [
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+        body: FutureBuilder<bool>(
+          future: _signInStatusFuture,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Form(
+                  key: editProfileFormKey,
+                  child: Column(
                     children: [
-                      Container(
-                        width: 150,
-                        height: 150,
-                        decoration: const BoxDecoration(
-                          color: Colors.grey,
-                          shape: BoxShape.circle,
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 150,
+                            height: 150,
+                            decoration: const BoxDecoration(
+                              color: Colors.grey,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.person,
+                              size: 100,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      CustomTextFormField(
+                        inputLabel: 'ชื่อ',
+                        inputHint: 'First Name',
+                        controller: changePasswordData.firstname,
+                        onValidate: (value) {
+                          if (value!.isEmpty) {
+                            return 'กรุณากรอกชื่อ';
+                          }
+                          return null;
+                        },
+                      ),
+                      CustomTextFormField(
+                        inputLabel: 'นามสกุล',
+                        inputHint: 'Last Name',
+                        controller: changePasswordData.lastname,
+                        onValidate: (value) {
+                          if (value!.isEmpty) {
+                            return 'กรุณากรอกนามสกุล';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 30),
+                      if (isError)
+                        Text(
+                          errorMessage,
+                          style: const TextStyle(
+                            color: Colors.red,
+                          ),
                         ),
-                        child: const Icon(
-                          Icons.person,
-                          size: 100,
-                          color: Colors.white,
-                        ),
+                      CustomElevatedButton(
+                        label: 'บันทึก',
+                        color: 'primary',
+                        fullWidth: true,
+                        rounded: true,
+                        onPressed: onSubmit,
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  CustomTextFormField(
-                    inputLabel: 'ชื่อ',
-                    inputHint: 'First Name',
-                    controller: changePasswordData.firstname,
-                    onValidate: (value) {
-                      if (value!.isEmpty) {
-                        return 'กรุณากรอกชื่อ';
-                      }
-                      return null;
-                    },
-                  ),
-                  CustomTextFormField(
-                    inputLabel: 'นามสกุล',
-                    inputHint: 'Last Name',
-                    controller: changePasswordData.lastname,
-                    onValidate: (value) {
-                      if (value!.isEmpty) {
-                        return 'กรุณากรอกนามสกุล';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 30),
-                  if (isError)
-                    Text(
-                      errorMessage,
-                      style: const TextStyle(
-                        color: Colors.red,
-                      ),
-                    ),
-                  CustomElevatedButton(
-                    label: 'บันทึก',
-                    color: 'primary',
-                    fullWidth: true,
-                    rounded: true,
-                    onPressed: onSignUp,
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );
