@@ -14,10 +14,10 @@ import 'package:flutter_cs_locker_project/components/dialog/loading_dialog.dart'
 import 'package:flutter_cs_locker_project/pages/auth/signup_success_page.dart';
 
 class SignUpOTPPage extends StatefulWidget {
-  int userID;
-  String otpRef;
+  final int userID;
+  final String otpRef;
 
-  SignUpOTPPage({
+  const SignUpOTPPage({
     super.key,
     required this.userID,
     required this.otpRef,
@@ -106,83 +106,86 @@ class _SignUpOTPPageState extends State<SignUpOTPPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      extendBodyBehindAppBar: true,
-      body: Stack(
-        children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Image.asset(
-              './assets/background/page-top-right.png',
-              fit: BoxFit.cover,
-              height: 180,
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        extendBodyBehindAppBar: true,
+        body: Stack(
+          children: [
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Image.asset(
+                './assets/background/page-top-right.png',
+                fit: BoxFit.cover,
+                height: 180,
+              ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(
-              top: 180.0,
-              left: 10.0,
-              right: 10.0,
-            ),
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              children: [
-                Image.asset(
-                  './assets/icon/otp.png',
-                  width: 250,
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  'ยืนยัน OTP',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+            Container(
+              padding: const EdgeInsets.only(
+                top: 180.0,
+                left: 10.0,
+                right: 10.0,
+              ),
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  Image.asset(
+                    './assets/icon/otp.png',
+                    width: 250,
                   ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  'ระบบทำการส่ง OTP ไปยังอีเมลของคุณแล้ว\nกรุณากรอกรหัส OTP ที่ได้รับ',
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                OtpTextField(
-                  numberOfFields: 6,
-                  focusedBorderColor: const Color.fromARGB(255, 10, 81, 147),
-                  showFieldAsBox: true,
-                  showCursor: true,
-                  onCodeChanged: (String code) => updateOTPCode(code),
-                  onSubmit: (String code) => updateOTPCode(code),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'Ref: ${widget.otpRef}',
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 12,
+                  const SizedBox(height: 10),
+                  const Text(
+                    'ยืนยัน OTP',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                isError
-                    ? Text(
-                        errorMessage,
-                        style: const TextStyle(color: Colors.red),
-                      )
-                    : const SizedBox(),
-                const SizedBox(height: 30),
-                CustomElevatedButton(
-                  label: 'ดำเนินการต่อ',
-                  fullWidth: true,
-                  rounded: true,
-                  color: 'primary',
-                  onPressed: onNextStep,
-                ),
-              ],
-            ),
-          )
-        ],
+                  const SizedBox(height: 10),
+                  const Text(
+                    'ระบบทำการส่ง OTP ไปยังอีเมลของคุณแล้ว\nกรุณากรอกรหัส OTP ที่ได้รับ',
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  OtpTextField(
+                    numberOfFields: 6,
+                    focusedBorderColor: const Color.fromARGB(255, 10, 81, 147),
+                    showFieldAsBox: true,
+                    showCursor: true,
+                    onCodeChanged: (String code) => updateOTPCode(code),
+                    onSubmit: (String code) => updateOTPCode(code),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Ref: ${widget.otpRef}',
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  isError
+                      ? Text(
+                          errorMessage,
+                          style: const TextStyle(color: Colors.red),
+                        )
+                      : const SizedBox(),
+                  const SizedBox(height: 30),
+                  CustomElevatedButton(
+                    label: 'ดำเนินการต่อ',
+                    fullWidth: true,
+                    rounded: true,
+                    color: 'primary',
+                    onPressed: onNextStep,
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -60,6 +60,28 @@ class UserData {
   });
 }
 
+class EditUserPasswordData {
+  final String oldPassword;
+  final String newPassword;
+  final String reNewPassword;
+
+  EditUserPasswordData({
+    required this.oldPassword,
+    required this.newPassword,
+    required this.reNewPassword,
+  });
+}
+
+class EditUserProfiledData {
+  final String firstname;
+  final String lastname;
+
+  EditUserProfiledData({
+    required this.firstname,
+    required this.lastname,
+  });
+}
+
 class Locker {
   final int lockerID;
   final int lockerNumber;

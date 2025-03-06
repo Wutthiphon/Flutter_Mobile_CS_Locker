@@ -9,6 +9,8 @@ import 'package:flutter_cs_locker_project/components/dialog/confirmation_dialog.
 
 // Pages
 import 'package:flutter_cs_locker_project/pages/setting/application_info_page.dart';
+import 'package:flutter_cs_locker_project/pages/setting/change_password_page.dart';
+import 'package:flutter_cs_locker_project/pages/setting/edit_profile_page.dart';
 import 'package:flutter_cs_locker_project/pages/app_layout.dart';
 
 class SettingPage extends StatefulWidget {
@@ -85,11 +87,7 @@ class _SettingPageState extends State<SettingPage> {
 
           return SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.only(
-                top: 10.0,
-                left: 10.0,
-                right: 10.0,
-              ),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
                   isSignIn
@@ -174,6 +172,7 @@ class _SettingPageState extends State<SettingPage> {
                           ),
                         ),
                   Card(
+                    color: Colors.white,
                     child: ListTile(
                       leading: const Icon(Icons.info),
                       title: const Text('เกี่ยวกับแอปพลิเคชัน'),
@@ -192,22 +191,37 @@ class _SettingPageState extends State<SettingPage> {
                           shrinkWrap: true,
                           children: [
                             Card(
+                              color: Colors.white,
                               child: ListTile(
                                 leading: const Icon(Icons.edit),
                                 title: const Text('แก้ไขโปรไฟล์'),
                                 trailing: const Icon(Icons.arrow_forward_ios),
-                                onTap: () {},
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const EditProfilePage(),
+                                  ),
+                                ),
                               ),
                             ),
                             Card(
+                              color: Colors.white,
                               child: ListTile(
                                 leading: const Icon(Icons.lock),
                                 title: const Text('เปลี่ยนรหัสผ่าน'),
                                 trailing: const Icon(Icons.arrow_forward_ios),
-                                onTap: () {},
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ChangePasswordPage(),
+                                  ),
+                                ),
                               ),
                             ),
                             Card(
+                              color: Colors.white,
                               child: ListTile(
                                 leading: const Icon(Icons.logout),
                                 title: const Text('ออกจากระบบ'),
