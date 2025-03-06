@@ -59,6 +59,7 @@ class _LockerCardState extends State<LockerCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.white,
       child: Column(
         children: [
           ListTile(
