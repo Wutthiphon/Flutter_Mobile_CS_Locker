@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cs_locker_project/components/dialog/confirmation_dialog.dart';
+import 'package:flutter_cs_locker_project/services/api/locker_api.dart';
 
 // Data Type
 import 'package:flutter_cs_locker_project/services/data_type.dart';
@@ -7,14 +7,18 @@ import 'package:flutter_cs_locker_project/services/data_type.dart';
 // Custom Components
 import 'package:flutter_cs_locker_project/components/dialog/alert_dialog.dart';
 import 'package:flutter_cs_locker_project/components/custom_elevated_button.dart';
+import 'package:flutter_cs_locker_project/components/dialog/loading_dialog.dart';
+import 'package:flutter_cs_locker_project/components/dialog/confirmation_dialog.dart';
 
 class LockerCard extends StatefulWidget {
   final Locker lockerData;
   final bool? isLogin;
+  final VoidCallback? onActionSuccess;
 
   const LockerCard({
     super.key,
     required this.lockerData,
+    this.onActionSuccess,
     this.isLogin,
   });
 
@@ -23,6 +27,8 @@ class LockerCard extends StatefulWidget {
 }
 
 class _LockerCardState extends State<LockerCard> {
+  bool isApiLoading = false;
+
   void onReserveLocker() {
     if (widget.isLogin == null || widget.isLogin == false) {
       showAlertDialog(
@@ -39,7 +45,36 @@ class _LockerCardState extends State<LockerCard> {
       content:
           "คุณต้องการจองล็อคเกอร์ ${widget.lockerData.lockerNumber} ใช่หรือไม่?",
       onConfirm: () {
-        // Call API to reserve locker
+        showLoadingDialog(context);
+        isApiLoading = true;
+
+        HttpLockerAPIService().onReserveLocker(widget.lockerData.lockerID).then(
+          (res) {
+            isApiLoading = false;
+            hideLoadingDialog(context);
+
+            if (res.containsKey('error') && !!res['error']) {
+              showAlertDialog(
+                context: context,
+                title: 'ข้อผิดพลาด',
+                content: res['message'],
+                alert_type: 'error',
+              );
+              return;
+            }
+
+            showAlertDialog(
+              context: context,
+              title: 'สำเร็จ',
+              content: 'จองล็อคเกอร์ ${widget.lockerData.lockerNumber} สำเร็จ',
+              alert_type: 'success',
+            );
+
+            if (widget.onActionSuccess != null) {
+              widget.onActionSuccess!();
+            }
+          },
+        );
       },
     );
   }
@@ -51,7 +86,38 @@ class _LockerCardState extends State<LockerCard> {
       content:
           "คุณต้องการสิ้นสุดการใช้งานล็อคเกอร์ ${widget.lockerData.lockerNumber} ใช่หรือไม่?",
       onConfirm: () {
-        // Call API to end reserve locker
+        showLoadingDialog(context);
+        isApiLoading = true;
+
+        HttpLockerAPIService()
+            .onEndReserveLocker(widget.lockerData.lockerID)
+            .then(
+          (res) {
+            isApiLoading = false;
+            hideLoadingDialog(context);
+            if (res.containsKey('error') && !!res['error']) {
+              showAlertDialog(
+                context: context,
+                title: 'ข้อผิดพลาด',
+                content: res['message'],
+                alert_type: 'error',
+              );
+              return;
+            }
+
+            showAlertDialog(
+              context: context,
+              title: 'สำเร็จ',
+              content:
+                  'เลิกใช้งานล็อคเกอร์ ${widget.lockerData.lockerNumber} สำเร็จ',
+              alert_type: 'success',
+            );
+
+            if (widget.onActionSuccess != null) {
+              widget.onActionSuccess!();
+            }
+          },
+        );
       },
     );
   }

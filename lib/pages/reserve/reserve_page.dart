@@ -17,11 +17,13 @@ class ReservePage extends StatefulWidget {
 
 class _ReservePageState extends State<ReservePage> {
   late Future<bool> _signInStatusFuture;
+  late Future<List<Locker>> _lockerFuture;
 
   @override
   void initState() {
     super.initState();
     _signInStatusFuture = checkSignInStatus();
+    _lockerFuture = fetchLockers();
   }
 
   @override
@@ -33,65 +35,71 @@ class _ReservePageState extends State<ReservePage> {
     return await Storage().getData('AUTH_TOKEN') != null;
   }
 
+  Future<List<Locker>> fetchLockers() async {
+    final data = await HttpLockerAPIService().getLockersNotInUsed();
+    if (data is Map && data.containsKey('error') && data['error']) {
+      throw Exception(data['message']);
+    }
+    return (data as List)
+        .map((e) => Locker.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Scaffold(
-        body: FutureBuilder<bool>(
-          future: _signInStatusFuture,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            }
+      body: FutureBuilder<bool>(
+        future: _signInStatusFuture,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
 
-            bool isSignIn = snapshot.data ?? false;
+          bool isSignIn = snapshot.data ?? false;
 
-            return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: FutureBuilder(
-                  future: HttpLockerAPIService().getLockersNotInUsed(),
-                  builder: (context, AsyncSnapshot<dynamic> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: CircularProgressIndicator(
-                            strokeCap: StrokeCap.round,
-                          ),
-                        ),
-                      );
-                    }
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: FutureBuilder<List<Locker>>(
+                future: _lockerFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
 
-                    if (snapshot.hasError ||
-                        (snapshot.data is Map &&
-                            snapshot.data.containsKey('error') &&
-                            snapshot.data['error'])) {
-                      return Center(
-                        child: Text(
-                            'Error: ${snapshot.error ?? (snapshot.data as Map)['message']}'),
-                      );
-                    }
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  }
 
-                    List<Locker> lockers = (snapshot.data as List)
-                        .map((e) => Locker.fromJson(e as Map<String, dynamic>))
-                        .toList();
+                  List<Locker> lockers = snapshot.data ?? [];
 
-                    return Column(
-                      children: [
-                        for (Locker locker in lockers)
-                          LockerCard(
+                  return Column(
+                    children: lockers
+                        .map(
+                          (locker) => LockerCard(
                             lockerData: locker,
                             isLogin: isSignIn,
+                            onActionSuccess: () {
+                              setState(() {
+                                _lockerFuture = fetchLockers();
+                              });
+                            },
                           ),
-                      ],
-                    );
-                  },
-                ),
+                        )
+                        .toList(),
+                  );
+                },
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

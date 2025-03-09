@@ -38,7 +38,6 @@ class _SignUpOTPPageState extends State<SignUpOTPPage> {
   void updateOTPCode(String optCode) {
     if (isError && optCode.length == 6) {
       setState(() {
-        debugPrint('Clear Error');
         isError = false;
         errorMessage = '';
       });

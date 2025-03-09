@@ -55,6 +55,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         return;
       }
 
+      if (changePasswordData.newPassword.text ==
+          changePasswordData.oldPassword.text) {
+        setState(() {
+          isError = true;
+          errorMessage = 'รหัสผ่านใหม่ต้องไม่เหมือนรหัสผ่านเดิม';
+        });
+        return;
+      }
+
       if (changePasswordData.newPassword.text !=
           changePasswordData.reNewPassword.text) {
         setState(() {
@@ -87,6 +96,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             return;
           }
 
+          setState(() {
+            changePasswordData.oldPassword.text = '';
+            changePasswordData.newPassword.text = '';
+            changePasswordData.reNewPassword.text = '';
+          });
           showAlertDialog(
             context: context,
             title: "สำเร็จ",

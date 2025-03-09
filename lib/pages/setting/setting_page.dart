@@ -38,8 +38,6 @@ class _SettingPageState extends State<SettingPage> {
   Future<bool> checkSignInStatus() async {
     bool isSignIn = await Storage().getData('AUTH_TOKEN') != null;
     if (isSignIn) {
-      var test = Storage().getJsonData('AUTH_USER').toString();
-      debugPrint(test);
       Map<String, dynamic>? userDataString =
           (await Storage().getJsonData('AUTH_USER'));
       if (userDataString != null) {

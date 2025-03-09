@@ -47,8 +47,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Future<bool> checkSignInStatus() async {
     bool isSignIn = await Storage().getData('AUTH_TOKEN') != null;
     if (isSignIn) {
-      var test = Storage().getJsonData('AUTH_USER').toString();
-      debugPrint(test);
       Map<String, dynamic>? userDataString =
           (await Storage().getJsonData('AUTH_USER'));
       if (userDataString != null) {
@@ -104,6 +102,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
             return;
           }
 
+          Storage().saveJsonData(
+            'AUTH_USER',
+            {
+              'email': res['email'],
+              'firstname': res['firstname'],
+              'lastname': res['lastname'],
+            },
+          );
           showAlertDialog(
             context: context,
             title: "สำเร็จ",

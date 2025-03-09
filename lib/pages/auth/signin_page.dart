@@ -65,7 +65,6 @@ class _SignInPageState extends State<SignInPage> {
       )
           .then(
         (res) {
-          debugPrint(res.toString());
           isApiLoading = false;
           hideLoadingDialog(context);
           if (res.containsKey('error') && !!res['error']) {

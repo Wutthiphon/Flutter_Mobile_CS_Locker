@@ -67,7 +67,6 @@ Future<void> showConfirmationDialog({
                   CustomElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop(true);
-                      onConfirm();
                     },
                     label: 'ยืนยัน',
                     color: 'primary',
