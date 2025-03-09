@@ -1,6 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../http_service.dart';
-import '../data_type.dart';
 
 final String apiURL = "${dotenv.env['API_URL']}/locker";
 

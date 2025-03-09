@@ -18,10 +18,13 @@ class _HomePageState extends State<HomePage> {
   late Future<bool> _signInStatusFuture;
   late UserData userData;
 
+  late Future<List<String>> _imageUrlsFuture;
+
   @override
   void initState() {
     super.initState();
     _signInStatusFuture = checkSignInStatus();
+    _imageUrlsFuture = fetchImageUrls();
   }
 
   @override
@@ -44,6 +47,14 @@ class _HomePageState extends State<HomePage> {
     }
 
     return isSignIn;
+  }
+
+  Future<List<String>> fetchImageUrls() async {
+    // ...
+    return [
+      "https://wutthiphon.space/bg1.58469ece57fad897.png",
+      "https://wutthiphon.space/bg1.58469ece57fad897.png",
+    ];
   }
 
   @override
@@ -149,18 +160,23 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                  const CustomImageCarousel(
-                    imageUrls: [
-                      "https://wutthiphon.space/bg1.58469ece57fad897.png",
-                      "https://wutthiphon.space/bg1.58469ece57fad897.png",
-                      "https://wutthiphon.space/bg1.58469ece57fad897.png",
-                      "https://wutthiphon.space/bg1.58469ece57fad897.png",
-                      "https://wutthiphon.space/bg1.58469ece57fad897.png",
-                      "https://wutthiphon.space/bg1.58469ece57fad897.png",
-                      "https://wutthiphon.space/bg1.58469ece57fad897.png",
-                      "https://wutthiphon.space/bg1.58469ece57fad897.png",
-                      "https://wutthiphon.space/bg1.58469ece57fad897.png",
-                    ],
+                  FutureBuilder<List<String>>(
+                    future: _imageUrlsFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      }
+
+                      final imageUrls = snapshot.data ?? [];
+
+                      return SingleChildScrollView(
+                        child: CustomImageCarousel(imageUrls: imageUrls),
+                      );
+                    },
                   ),
                   const SizedBox(height: 20),
                   const Text(
@@ -170,7 +186,13 @@ class _HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  // To do: Add more content
+                  const Text(
+                    "ทดสอบการใช้งานแอปพลิเคชัน",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
                 ],
               ),
             ),
