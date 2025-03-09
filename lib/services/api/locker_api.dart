@@ -35,6 +35,16 @@ class HttpLockerAPIService {
     ).fetch();
   }
 
+  Future onUnlockLocker(int lockerID) async {
+    return APIService(
+      url: "$apiURL/unlock-locker-app",
+      method: 'POST',
+      data: {
+        'locker_id': lockerID,
+      },
+    ).fetch();
+  }
+
   Future onEndReserveLocker(int lockerID) async {
     return APIService(
       url: "$apiURL/cancel-locker",

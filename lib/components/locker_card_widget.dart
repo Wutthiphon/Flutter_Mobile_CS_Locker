@@ -47,41 +47,76 @@ class _LockerCardState extends State<LockerCard> {
       content:
           "คุณต้องการจองล็อคเกอร์ ${widget.lockerData.lockerNumber} ใช่หรือไม่?",
       onConfirm: () {
-        showLoadingDialog(context);
-        isApiLoading = true;
+        if (!isApiLoading) {
+          showLoadingDialog(context);
+          isApiLoading = true;
 
-        HttpLockerAPIService().onReserveLocker(widget.lockerData.lockerID).then(
-          (res) {
-            isApiLoading = false;
-            hideLoadingDialog(context);
+          HttpLockerAPIService()
+              .onReserveLocker(widget.lockerData.lockerID)
+              .then(
+            (res) {
+              isApiLoading = false;
+              hideLoadingDialog(context);
 
-            if (res.containsKey('error') && !!res['error']) {
+              if (res.containsKey('error') && !!res['error']) {
+                showAlertDialog(
+                  context: context,
+                  title: 'ข้อผิดพลาด',
+                  content: res['message'],
+                  alert_type: 'error',
+                );
+                if (widget.onActionNotSuccess != null) {
+                  widget.onActionNotSuccess!();
+                }
+                return;
+              }
+
               showAlertDialog(
                 context: context,
-                title: 'ข้อผิดพลาด',
-                content: res['message'],
-                alert_type: 'error',
+                title: 'สำเร็จ',
+                content:
+                    'จองล็อคเกอร์ ${widget.lockerData.lockerNumber} สำเร็จ',
+                alert_type: 'success',
               );
-              if (widget.onActionNotSuccess != null) {
+
+              if (widget.onActionSuccess != null) {
                 widget.onActionSuccess!();
               }
-              return;
-            }
-
-            showAlertDialog(
-              context: context,
-              title: 'สำเร็จ',
-              content: 'จองล็อคเกอร์ ${widget.lockerData.lockerNumber} สำเร็จ',
-              alert_type: 'success',
-            );
-
-            if (widget.onActionSuccess != null) {
-              widget.onActionSuccess!();
-            }
-          },
-        );
+            },
+          );
+        }
       },
     );
+  }
+
+  void onUnlockLocker() {
+    if (!isApiLoading) {
+      showLoadingDialog(context);
+      isApiLoading = true;
+
+      HttpLockerAPIService().onUnlockLocker(widget.lockerData.lockerID).then(
+        (res) {
+          isApiLoading = false;
+          hideLoadingDialog(context);
+          if (res.containsKey('error') && !!res['error']) {
+            showAlertDialog(
+              context: context,
+              title: 'ข้อผิดพลาด',
+              content: res['message'],
+              alert_type: 'error',
+            );
+            return;
+          }
+
+          showAlertDialog(
+            context: context,
+            title: 'สำเร็จ',
+            content: 'เปิดล็อคเกอร์ ${widget.lockerData.lockerNumber} แล้ว',
+            alert_type: 'success',
+          );
+        },
+      );
+    }
   }
 
   void onEndReserveLocker() {
@@ -91,41 +126,43 @@ class _LockerCardState extends State<LockerCard> {
       content:
           "คุณต้องการสิ้นสุดการใช้งานล็อคเกอร์ ${widget.lockerData.lockerNumber} ใช่หรือไม่?",
       onConfirm: () {
-        showLoadingDialog(context);
-        isApiLoading = true;
+        if (!isApiLoading) {
+          showLoadingDialog(context);
+          isApiLoading = true;
 
-        HttpLockerAPIService()
-            .onEndReserveLocker(widget.lockerData.lockerID)
-            .then(
-          (res) {
-            isApiLoading = false;
-            hideLoadingDialog(context);
-            if (res.containsKey('error') && !!res['error']) {
+          HttpLockerAPIService()
+              .onEndReserveLocker(widget.lockerData.lockerID)
+              .then(
+            (res) {
+              isApiLoading = false;
+              hideLoadingDialog(context);
+              if (res.containsKey('error') && !!res['error']) {
+                showAlertDialog(
+                  context: context,
+                  title: 'ข้อผิดพลาด',
+                  content: res['message'],
+                  alert_type: 'error',
+                );
+                if (widget.onActionNotSuccess != null) {
+                  widget.onActionNotSuccess!();
+                }
+                return;
+              }
+
               showAlertDialog(
                 context: context,
-                title: 'ข้อผิดพลาด',
-                content: res['message'],
-                alert_type: 'error',
+                title: 'สำเร็จ',
+                content:
+                    'เลิกใช้งานล็อคเกอร์ ${widget.lockerData.lockerNumber} สำเร็จ',
+                alert_type: 'success',
               );
-              if (widget.onActionNotSuccess != null) {
+
+              if (widget.onActionSuccess != null) {
                 widget.onActionSuccess!();
               }
-              return;
-            }
-
-            showAlertDialog(
-              context: context,
-              title: 'สำเร็จ',
-              content:
-                  'เลิกใช้งานล็อคเกอร์ ${widget.lockerData.lockerNumber} สำเร็จ',
-              alert_type: 'success',
-            );
-
-            if (widget.onActionSuccess != null) {
-              widget.onActionSuccess!();
-            }
-          },
-        );
+            },
+          );
+        }
       },
     );
   }
@@ -202,11 +239,23 @@ class _LockerCardState extends State<LockerCard> {
                     alignment: MainAxisAlignment.end,
                     children: [
                       widget.lockerData.isInUse
-                          ? CustomElevatedButton(
-                              onPressed: () => onEndReserveLocker(),
-                              size: 'small',
-                              color: 'secondary',
-                              label: 'สิ้นสุดการใช้งาน',
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              spacing: 4,
+                              children: [
+                                CustomElevatedButton(
+                                  onPressed: () => onUnlockLocker(),
+                                  size: 'small',
+                                  color: 'success',
+                                  label: 'ปลดล็อค',
+                                ),
+                                CustomElevatedButton(
+                                  onPressed: () => onEndReserveLocker(),
+                                  size: 'small',
+                                  color: 'secondary',
+                                  label: 'สิ้นสุดการใช้งาน',
+                                )
+                              ],
                             )
                           : CustomElevatedButton(
                               onPressed: () => onReserveLocker(),
