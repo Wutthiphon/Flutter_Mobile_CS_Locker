@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cs_locker_project/services/api/home_api.dart';
 import 'package:flutter_cs_locker_project/services/storage/storage.dart';
 
 // Data Type
@@ -24,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _signInStatusFuture = checkSignInStatus();
-    _imageUrlsFuture = fetchImageUrls();
+    _imageUrlsFuture = fetchHomeImages();
   }
 
   @override
@@ -49,12 +50,18 @@ class _HomePageState extends State<HomePage> {
     return isSignIn;
   }
 
-  Future<List<String>> fetchImageUrls() async {
-    // ...
-    return [
-      "https://wutthiphon.space/bg1.58469ece57fad897.png",
-      "https://wutthiphon.space/bg1.58469ece57fad897.png",
-    ];
+  Future<List<String>> fetchHomeImages() async {
+    final response = await HttpGetImageService().geHomePageImage();
+
+    if (response is Map &&
+        response.containsKey('url') &&
+        response['url'] is List) {
+      return (response['url'] as List)
+          .map<String>((e) => e['img_url'].toString())
+          .toList();
+    } else {
+      throw Exception('Invalid response format');
+    }
   }
 
   @override
@@ -180,18 +187,26 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 20),
                   const Text(
-                    "แนะนำการใช้งาน",
+                    "Lock!Lock!",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const Text(
-                    "ทดสอบการใช้งานแอปพลิเคชัน",
+                    "ระบบล็อคเกอร์อัจฉริยะ",
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey,
                     ),
+                  ),
+                  const Text(
+                    "จัดการ Locker ของคุณได้ง่ายและสะดวกยิ่งขึ้น!\n📍 ดูสถานะตู้ล็อกเกอร์แบบเรียลไทม์\n📅 จองล็อกเกอร์ล่วงหน้าได้ทันทีผ่านแอป\n🔗 ปลดล็อกและจัดการการใช้งานผ่าน API อัตโนมัติ\n\nให้ทุกการใช้งานล็อกเกอร์ของคุณเป็นเรื่องง่าย คล่องตัว และปลอดภัย\n\n🎉 เริ่มต้นใช้งานได้เลย! 🎉",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.blueGrey,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
