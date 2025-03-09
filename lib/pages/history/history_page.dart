@@ -151,7 +151,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             (locker) => LockerCard(
                               lockerData: locker,
                               isLogin: true,
-                              onActionSuccess: fetchData,
+                              onActionSuccess: () => fetchData(),
                             ),
                           )
                           .toList()

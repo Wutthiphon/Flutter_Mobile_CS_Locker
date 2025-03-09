@@ -91,6 +91,7 @@ class _ReservePageState extends State<ReservePage> {
                                 _lockerFuture = fetchLockers();
                               });
                             },
+                            onActionNotSuccess: () => fetchLockers(),
                           ),
                         )
                         .toList(),

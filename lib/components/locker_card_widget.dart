@@ -14,11 +14,13 @@ class LockerCard extends StatefulWidget {
   final Locker lockerData;
   final bool? isLogin;
   final VoidCallback? onActionSuccess;
+  final VoidCallback? onActionNotSuccess;
 
   const LockerCard({
     super.key,
     required this.lockerData,
     this.onActionSuccess,
+    this.onActionNotSuccess,
     this.isLogin,
   });
 
@@ -60,6 +62,9 @@ class _LockerCardState extends State<LockerCard> {
                 content: res['message'],
                 alert_type: 'error',
               );
+              if (widget.onActionNotSuccess != null) {
+                widget.onActionSuccess!();
+              }
               return;
             }
 
@@ -102,6 +107,9 @@ class _LockerCardState extends State<LockerCard> {
                 content: res['message'],
                 alert_type: 'error',
               );
+              if (widget.onActionNotSuccess != null) {
+                widget.onActionSuccess!();
+              }
               return;
             }
 
