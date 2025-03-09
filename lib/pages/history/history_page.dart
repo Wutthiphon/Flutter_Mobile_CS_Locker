@@ -92,7 +92,25 @@ class _HistoryPageState extends State<HistoryPage> {
                         ),
                       ],
                     )
-                  : const Center(child: Text('กรุณาเข้าสู่ระบบ')),
+                  : const Center(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 50),
+                          Icon(
+                            Icons.lock,
+                            size: 100,
+                            color: Colors.blueGrey,
+                          ),
+                          Text(
+                            'กรุณาเข้าสู่ระบบ',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.blueGrey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
             ),
           );
         },
