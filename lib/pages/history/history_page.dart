@@ -41,7 +41,8 @@ class _HistoryPageState extends State<HistoryPage> {
   Future<List<Locker>> fetchMyLockerInUsed() async {
     final data = await HttpLockerAPIService().getMyLockerInUsed();
     if (data is Map && data.containsKey('error') && data['error']) {
-      throw Exception(data['message']);
+      debugPrint('Error: ${data['message']}');
+      return [];
     }
     return (data['data'] as List)
         .map((e) => Locker.fromJson(e as Map<String, dynamic>))
@@ -51,7 +52,8 @@ class _HistoryPageState extends State<HistoryPage> {
   Future<List<Locker>> fetchMyLockerHistory() async {
     final data = await HttpLockerAPIService().getMyLockerExpired();
     if (data is Map && data.containsKey('error') && data['error']) {
-      throw Exception(data['message']);
+      debugPrint('Error: ${data['message']}');
+      return [];
     }
     return (data['data'] as List)
         .map((e) => Locker.fromJson(e as Map<String, dynamic>))

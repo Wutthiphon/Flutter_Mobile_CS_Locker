@@ -38,7 +38,8 @@ class _ReservePageState extends State<ReservePage> {
   Future<List<Locker>> fetchLockers() async {
     final data = await HttpLockerAPIService().getLockersNotInUsed();
     if (data is Map && data.containsKey('error') && data['error']) {
-      throw Exception(data['message']);
+      debugPrint('Error: ${data['message']}');
+      return [];
     }
     return (data as List)
         .map((e) => Locker.fromJson(e as Map<String, dynamic>))
