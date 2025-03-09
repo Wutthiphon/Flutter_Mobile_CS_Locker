@@ -8,6 +8,7 @@ import 'package:flutter_cs_locker_project/services/data_type.dart';
 // Custom Components
 import 'package:flutter_cs_locker_project/components/custom_elevated_button.dart';
 import 'package:flutter_cs_locker_project/components/dialog/loading_dialog.dart';
+import 'package:flutter_cs_locker_project/components/dialog/alert_dialog.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
@@ -86,7 +87,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             return;
           }
 
-          // Success
+          showAlertDialog(
+            context: context,
+            title: "สำเร็จ",
+            content: "เปลี่ยนรหัสผ่านเรียบร้อยแล้ว",
+            alert_type: 'success',
+          );
         },
       );
     }
@@ -173,7 +179,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 30),
                     if (isError)
                       Text(
                         errorMessage,
@@ -181,6 +186,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           color: Colors.red,
                         ),
                       ),
+                    const SizedBox(height: 30),
                     CustomElevatedButton(
                       label: 'บันทึก',
                       color: 'primary',

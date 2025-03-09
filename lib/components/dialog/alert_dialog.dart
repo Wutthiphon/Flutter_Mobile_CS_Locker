@@ -7,6 +7,7 @@ Future<void> showAlertDialog({
   required BuildContext context,
   required String title,
   required String content,
+  String alert_type = 'warning',
 }) async {
   await showDialog<void>(
     context: context,
@@ -18,10 +19,23 @@ Future<void> showAlertDialog({
         ),
         title: Column(
           children: [
-            const Icon(
-              Icons.warning,
+            Icon(
+              // Icons.warning,
+              alert_type == 'warning'
+                  ? Icons.warning
+                  : alert_type == 'error'
+                      ? Icons.error
+                      : alert_type == 'success'
+                          ? Icons.check_circle
+                          : Icons.info,
               size: 60,
-              color: Colors.orange,
+              color: alert_type == 'warning'
+                  ? Colors.orange
+                  : alert_type == 'error'
+                      ? Colors.red
+                      : alert_type == 'success'
+                          ? Colors.green
+                          : Colors.blueGrey,
             ),
             const SizedBox(height: 10),
             Text(

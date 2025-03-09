@@ -43,18 +43,18 @@ class HttpAuthAPIService {
 
   Future userChangePassword(EditUserPasswordData editUserPasswordData) async {
     return APIService(
-      url: "$apiURL/user-change-password",
+      url: "$apiURL/update-password",
       method: 'POST',
       data: {
-        "old_password": editUserPasswordData.oldPassword,
-        "new_password": editUserPasswordData.newPassword,
+        "oldpassword": editUserPasswordData.oldPassword,
+        "newpassword": editUserPasswordData.newPassword,
       },
     ).fetch();
   }
 
   Future userEditProfile(EditUserProfiledData editUserProfiledData) async {
     return APIService(
-      url: "$apiURL/user-edit-profile",
+      url: "$apiURL/update-user",
       method: 'POST',
       data: {
         "firstname": editUserProfiledData.firstname,

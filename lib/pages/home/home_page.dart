@@ -4,6 +4,9 @@ import 'package:flutter_cs_locker_project/services/storage/storage.dart';
 // Data Type
 import 'package:flutter_cs_locker_project/services/data_type.dart';
 
+// Custom Components
+import 'package:flutter_cs_locker_project/components/carousel_image.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -148,8 +151,21 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
+                  const CustomImageCarousel(
+                    imageUrls: [
+                      "https://wutthiphon.space/bg1.58469ece57fad897.png",
+                      "https://wutthiphon.space/bg1.58469ece57fad897.png",
+                      "https://wutthiphon.space/bg1.58469ece57fad897.png",
+                    ],
+                  ),
                   const SizedBox(height: 20),
-                  const Text('เนื้อหาในหน้าแรก')
+                  const Text(
+                    "แนะนำการใช้งาน",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
             ),

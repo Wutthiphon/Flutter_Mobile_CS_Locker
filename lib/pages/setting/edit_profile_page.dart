@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cs_locker_project/services/storage/storage.dart';
-import 'package:flutter_cs_locker_project/components/custom_text_form_filed.dart';
 import 'package:flutter_cs_locker_project/services/api/auth_api.dart';
 
 // Data Type
 import 'package:flutter_cs_locker_project/services/data_type.dart';
 
 // Custom Components
+import 'package:flutter_cs_locker_project/components/custom_text_form_filed.dart';
 import 'package:flutter_cs_locker_project/components/custom_elevated_button.dart';
 import 'package:flutter_cs_locker_project/components/dialog/loading_dialog.dart';
+import 'package:flutter_cs_locker_project/components/dialog/alert_dialog.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -103,7 +104,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
             return;
           }
 
-          // Success
+          showAlertDialog(
+            context: context,
+            title: "สำเร็จ",
+            content: "แก้ไขโปรไฟล์สำเร็จ",
+            alert_type: 'success',
+          );
         },
       );
     }
@@ -202,7 +208,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 30),
                       if (isError)
                         Text(
                           errorMessage,
@@ -210,6 +215,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             color: Colors.red,
                           ),
                         ),
+                      const SizedBox(height: 30),
                       CustomElevatedButton(
                         label: 'บันทึก',
                         color: 'primary',

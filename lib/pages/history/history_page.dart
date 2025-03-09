@@ -124,7 +124,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                                       .toList(),
                                                 )
                                               : const Text(
-                                                  'ไม่มีล็อคเกอร์ที่กำลังใช้งานอยู่'),
+                                                  'ไม่มีล็อคเกอร์ที่กำลังใช้งานอยู่',
+                                                ),
                                         ],
                                       );
                                     },
@@ -205,7 +206,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                                       .toList(),
                                                 )
                                               : const Text(
-                                                  'ยังไม่มีการใช้งานล็อคเกอร์'),
+                                                  'ยังไม่มีการใช้งานล็อคเกอร์',
+                                                ),
                                         ],
                                       );
                                     },
