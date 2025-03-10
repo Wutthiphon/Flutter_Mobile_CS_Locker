@@ -62,6 +62,4 @@ class HttpAuthAPIService {
       },
     ).fetch();
   }
-
-  // Edit Profile
 }
